@@ -1,16 +1,19 @@
 <!doctype html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Gametracker index</title>
-    <link rel="stylesheet" href="./Front-end/my-app/src/index.css">
-  </head>
-  <body>
-    <div>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gametracker index</title>
+  <link rel="stylesheet" href="./Front-end/my-app/src/index.css">
+</head>
+
+<body>
+  <div>
+    <div class="section-one">
       <nav class="navbar">
-        <div>
-          <h1><a href="">Nombre-Logo</a></h1> <!--Ponerle nombre/logo, el boton llevará a inicio-->
+        <div class="div-navbar">
+          <h1 class="title"><a href="">Nombre-Logo</a></h1> <!--Ponerle nombre/logo, el boton llevará a inicio-->
           <ul>
             <li><a href="">Sobre Nosotros</a></li>
             <li><a href="">Biblioteca</a></li>
@@ -25,44 +28,137 @@
           <h2>Tu plataforma personal para guardar y descubrir juegos que te gusten</h2>
         </header>
       </div>
-      <div>
-        <section>
-          <h2>Explora nuestra biblioteca de juegos</h2>
-          <p>Descubre nuevos títulos y guarda tus favoritos en tu colección personal.</p>
-          <button href="">Ver Biblioteca</button> <!--Poner href Estadísticas-->
-        </section>
-        <section>
-          <h2>Estadísticas de juego</h2>
-          <p>Mantente al tanto de tu progreso y logros en los juegos que amas.</p>
-          <button href="">Ver Estadísticas</button> <!--Poner href Estadísticas-->
-        </section>
-      </div>
-      <div>
-        <h2>¿Aun no tienes un usuario?</h2>
-        <button>¡Crea uno!</button> <!--Poner href Crear Usuario, que boton sea más grande-->
-      </div>
-      <footer>
-        <div>
-          <h3>Colaboradores</h3> <!--Poner href a sus paginas, en caso de personas, link a github-->
-          <ul>
-            <li>Lucía Silva</li>
-            <li>Lautaro Cardozo</li>
-            <li>Pinterest</li>
-            <li>W3Schools</li>
-            <li>Copilot</li>
-          </ul>
+      <div class="div-width-carrusel">
+        <div class="carousel-container">
+          <h1>Ofertas Especiales</h1>
+          <button class="btn prev">&#10094;</button>
+          <div class="carousel" id="carousel">
+            <!-- Carta de juego -->
+            <div class="card">
+              <div class="card-image">
+                <img src="/Front-end/images/Hollow_Knight.png" alt="Hollow Knight">
+                <div class="discount-badge">-60%</div>
+              </div>
+              <div class="card-content">
+                <h2 class="card-title">Hollow Knight</h2>
+                <div class="price-container">
+                  <span class="original-price">$14.99</span>
+                  <span class="current-price">$5.99</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-image">
+                <img src="/Front-end/images/silksong.jpg" alt="Silksong">
+                <div class="discount-badge">-45%</div>
+              </div>
+              <div class="card-content">
+                <h2 class="card-title">Hollow Knight: Silksong</h2>
+                <div class="price-container">
+                  <span class="original-price">$29.99</span>
+                  <span class="current-price">$16.49</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-image">
+                <img src="/Front-end/images/sky.jpg" alt="Sky">
+                <div class="discount-badge">-75%</div>
+              </div>
+              <div class="card-content">
+                <h2 class="card-title">Sky: Children of the Light</h2>
+                <div class="price-container">
+                  <span class="original-price">$19.99</span>
+                  <span class="current-price">$4.99</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-image">
+                <img src="/Front-end/images/valorant.jpg" alt="Valorant">
+                <div class="discount-badge">-30%</div>
+              </div>
+              <div class="card-content">
+                <h2 class="card-title">Valorant Premium Pass</h2>
+                <div class="price-container">
+                  <span class="original-price">$9.99</span>
+                  <span class="current-price">$6.99</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-image">
+                <img src="/Front-end/images/background.jpg" alt="Juego">
+                <div class="discount-badge">-80%</div>
+              </div>
+              <div class="card-content">
+                <h2 class="card-title">Juego Especial</h2>
+                <div class="price-container">
+                  <span class="original-price">$49.99</span>
+                  <span class="current-price">$9.99</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button class="btn next">&#10095;</button>
         </div>
-        <div>
-          <h3>Contacto</h3> <!--Poner href-->
-          <ul>
-            <li>Email</li>
-            <li>Teléfono</li>
-            <li>Instagram</li>
-          </ul>
-        </div>
-      </footer>
+      </div>
     </div>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+    <div class="features-container">
+    <!-- Biblioteca -->
+      <section class="feature-card">
+        <h2>Explora nuestra biblioteca de juegos</h2>
+        <p>Descubre nuevos títulos y guarda tus favoritos en tu colección personal.</p>
+        <button class="feature-btn" onclick="window.location.href='#biblioteca'">Ver Biblioteca</button>
+      </section>
+
+    <!-- Estadisticas -->
+      <section class="feature-card">
+        <h2>Estadísticas de juego</h2>
+        <p>Mantente al tanto de tu progreso y logros en los juegos que amas.</p>
+        <button class="feature-btn" onclick="window.location.href='#estadisticas'">Ver Estadísticas</button>
+      </section>
+    </div>
+
+    <!-- Usuarios -->
+    <div class="cta-section">
+      <h2>¿Aún no tienes un usuario?</h2>
+      <button class="cta-btn" onclick="window.location.href='#crear-usuario'">¡Crea uno!</button>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>Colaboradores</h3>
+          <ul>
+            <li onclick="window.location.href='https://github.com/Lullaby-SQ'">Lucía Silva</li>
+            <li onclick="window.location.href='https://github.com/MineAbel'">Lautaro Cardozo</li>
+            <li onclick="window.location.href='https://pinterest.com'">Pinterest</li>
+            <li onclick="window.location.href='https://w3schools.com'">W3Schools</li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h3>Contacto</h3>
+          <ul>
+            <li onclick="window.location.href='mailto:contacto@ejemplo.com'">📧 Email</li>
+            <li onclick="window.location.href='tel:+123456789'">📱 Teléfono</li>
+            <li onclick="window.location.href='https://instagram.com'">📷 Instagram</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-copy-right">
+        <p>&copy; 2025 Game Library. Todos los derechos reservados.</p>
+      </div>
+    </footer>
+    <!-- Footer -->
+  </div>
+  <script type="module" src="/src/main.jsx"></script>
+  <script src="./Front-end/carrusel.js"></script>
+</body>
 </html>
