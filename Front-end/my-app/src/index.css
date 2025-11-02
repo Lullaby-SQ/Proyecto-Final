@@ -1,9 +1,7 @@
 :root {
   line-height: 1.5;
   font-weight: 400;
-
   color-scheme: light dark;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -20,8 +18,6 @@
 html,
 body {
   width: 100%;
-  overflow-x: hidden;
-  /* Oculta el scroll horizontal */
   margin: 0;
   padding: 0;
 }
@@ -480,7 +476,7 @@ SECCIÓN DE CARACTERÍSTICAS (Biblioteca y Estadísticas)
 SECCIÓN CALL TO ACTION (Crear Usuario)
 ============================================ */
 
-.miembro {
+.cta-section {
   max-width: 1200px;
   margin: 100px auto;
   padding: 80px 40px;
@@ -682,49 +678,255 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-/*----- Cartas para editar juegos -----*/
+/*------ Fondo del modal ------*/
 .overlay {
-  display: flex;
-  position: fixed;
-  inset: 0;
-  opacity: 0;
-  background: rgba(10, 10, 10, 0.55);
-  backdrop-filter: blur(6px);
+  display: none; /* No se muestra hasta hacer click en el boton de mostrar*/
+  position: fixed; 
+  inset: 0; /* Sirve para que se muestre en toda la pantalla */
+  background: rgba(5, 5, 15, 0.75); /* Fondo negro transparente*/
+  backdrop-filter: blur(8px); /* fondo con difuminado */
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 1000; /* Muestra el overlay por arriba de todo elemento con valor de z-index mas bajo */
+  padding: 20px;
+  opacity: 0;
+  transition: opacity 0.5s ease;
 }
 
+/*------ Contenedor del popup ------*/
 .popup {
-    background: linear-gradient(145deg, #ffffff, #e8f2ff);
-    border-radius: 20px;
-    padding: 35px 40px;
-    width: 600px;
-    border-style: solid;
-    color: #003366;
-    box-shadow: 0 10px 30px rgba(0, 60, 130, 0.3);
-    max-height: 80vh; /* altura máxima: 80% del alto visible de la ventana */
-    overflow-y: auto; /* activa la barra de scroll vertical si el contenido se pasa */
-    overflow-x: hidden; /* evita que aparezca una barra horizontal */
-    animation: aparecer 0.4s ease;
+  background: linear-gradient(145deg, #0a0e27, #1a1f40, #2a2955); /* Color de fondo con degradado */
+  border-radius: 20px;
+  padding: 35px 40px;
+  margin: 20px;
+  max-width: 850px; /* anchura maxima  */
+  border: 1px solid rgba(100, 130, 255, 0.3);
+  box-shadow: 0 0 25px rgba(120, 150, 255, 0.3);
+  max-height: 85vh; /* altura maxima */
+  overflow-y: auto;
+  position: relative; /* para poder mover libremente la x que cierra el modal */
+  animation: slideUp 0.4s ease; /* Animación al aparecer el popup */
 }
 
+/*------ Botón de cierre ------*/
+.btn-cerrar {
+  position: absolute; /* Para poder mover libremente el elemento */
+  top: 15px; 
+  right: 15px; /* Lo posiciona en la esquina superior derecha*/
+  background: none; 
+  border: none; /* Le quita todo estilo innecesario para dejar unicamente la x */
+  color: #b0bcff;
+  font-size: 1.5rem;
+  cursor: pointer; /* al pasar el cursor por arriba muestra que sea un elemento clickeable */
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.btn-cerrar:hover {
+  transform: rotate(90deg); /* Animación de giro */
+  color: #8fa3ff;
+}
+
+/*------ Contenido del modal ------*/
 .div-popup {
   display: flex;
+  flex-direction: row; /* Muestra el contenido en fila */
+  gap: 30px;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+.section-valoracion {
+  padding-top: 20px; /* lo deja un poco bajo para que no choque con la x */
+  min-width: 250px;
+}
+
+/* Imagen del juego */
+.img-valoracion > img {
+  width: 220px;
+  max-width: 100%;
+  border-radius: 16px;
+  border: 2px solid rgba(180, 200, 255, 0.6);
+  box-shadow: 0 4px 15px rgba(0, 0, 50, 0.5);
+  transition: 0.4s ease;
+}
+
+.img-valoracion > img:hover {
+  transform: scale(1.05);
+}
+
+/* Títulos y texto */
+.title-valoracion {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #a7b4ff;
+  text-shadow: 0 0 5px rgba(100, 150, 255, 0.3);
+}
+
+.section-valoracion h3 {
+  color: #b8c3ff;
+  margin-top: 10px;
+}
+
+.section-valoracion p {
+  color: #e8ebff;
+  line-height: 1.5;
+  text-align: justify;
+}
+
+/* Categorías */
+.categorias ul {
+  display: flex;
+  flex-wrap: wrap; /* Si losli superan el tamaño del ul se van para abajo */
+  margin-top: 10px;
+  gap: 10px;
+  list-style: none; /* Le quitammos el circulito a la lista*/
+  padding: 0;
+}
+
+.categorias li {
+  background: linear-gradient(135deg, #4f46e5, #3b82f6);
+  padding: 6px 12px;
+  border-radius: 10px;
+  color: #fff;
+  font-weight: 500;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.categorias li:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 10px rgba(80, 120, 255, 0.5);
+}
+
+/*------ Estrellas de valoración ------*/
+.estrellas {
+  font-size: 2rem;
+  color: #4f46e5;
+  display: flex;
+  gap: 6px;
+}
+
+.estrella {
+  transition: transform 0.3s, color 0.3s;
+  cursor: pointer;
+}
+
+/* Estilo de la estrella cuando es seleccionada o se pasa por arriba */
+.estrella:hover,
+.estrella.active {
+  color: #ffd700;
+  transform: scale(1.2);
+}
+
+/* Animación al aparecer el popup pasa de una opacidad de 0 a 1 y se mueve ligeramente hacia arirba*/
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/*------ Formulario de valoración ------*/
+.form-valoracion {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 25px;
+}
+
+.form-valoracion label {
+  color: #b8c3ff;
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+
+/* Estilo normal de input */
+.form-valoracion input,
+.form-valoracion select,
+.form-valoracion textarea {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(150, 160, 255, 0.3);
+  border-radius: 10px;
+  color: #e8ebff;
+  padding: 10px 12px;
+  font-size: 0.95rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  resize: none; /* Evita que el input cambie de tamaño */
+}
+
+.form-valoracion select option {
+  background-color:#16213e;
+}
+
+/* Cuando se esta seleccionando el input */
+.form-valoracion input:focus,
+.form-valoracion select:focus,
+.form-valoracion textarea:focus {
+  outline: none; /* Contorno por defecto desaparece para agregar nuestro border-color */
+  border-color: #6a5acd;
+  box-shadow: 0 0 10px rgba(100, 80, 255, 0.4);
+}
+
+/*------ Botón de enviar ------*/
+.btn-enviar {
+  background: linear-gradient(135deg, #4f46e5, #3b82f6);
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  padding: 10px 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  margin-top: 10px;
+  align-self: flex-end; /* Posiciona boton en esquina inferior derecha */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-enviar:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(120, 150, 255, 0.5);
+}
+
+
+/*------ Responsive - Modal de datos de juego ------*/
+@media (max-width: 768px) {
+  .div-popup {
+    flex-direction: column;
+    text-align: center;
   }
 
-  a:hover {
-    color: #747bff;
+  .section-valoracion > p {
+    text-align: center;
   }
 
-  button {
-    background-color: #f9f9f9;
+  .categorias > ul {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .estrellas {
+    align-items: center;
+    justify-content: center;
+  }
+
+  .img-valoracion > img {
+    width: 180px;
+  }
+
+  .popup {
+    padding: 25px;
+  }
+
+   .form-valoracion {
+    gap: 10px;
+  }
+
+  .btn-enviar {
+    align-self: center;
+    width: 100%;
   }
 }
 
