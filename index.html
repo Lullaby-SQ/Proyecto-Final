@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gametracker index</title>
+  <link rel="stylesheet" href="./Front-end/my-app/src/index.css">
+</head>
+
+<body id="body">
+  <div>
+    <div class="section-one">
+      <nav class="navbar">
+        <div class="div-navbar">
+          <h1 class="title"><a href="">Nombre-Logo</a></h1> <!--Ponerle nombre/logo, el boton llevará a inicio-->
+          <ul>
+            <li><a href="">Sobre Nosotros</a></li>
+            <li><a href="">Biblioteca</a></li>
+            <li><a href="">Estasísticas</a></li>
+            <li><a href="">Usuario</a></li>
+          </ul>
+        </div>
+      </nav>
+      <div>
+        <header>
+          <h1>¡Bienvenido !</h1> <!--Poner nombre de usuario después de bienvenido-->
+          <h2>Tu plataforma personal para guardar y descubrir juegos que te gusten</h2>
+        </header>
+      </div>
+      <div class="div-width-carrusel">
+        <div class="carousel-container">
+          <h1>Ofertas Especiales</h1>
+          <button class="btn prev">&#10094;</button>
+          <div class="carousel" id="carousel">
+            <!-- Carta de juego -->
+            <div class="card btn-abrir">
+              <div class="card-image">
+                <img src="/Front-end/images/Hollow_Knight.png" alt="Hollow Knight">
+                <div class="discount-badge">-60%</div>
+              </div>
+              <div class="card-content">
+                <h2 class="card-title">Hollow Knight</h2>
+                <div class="price-container">
+                  <span class="original-price">$14.99</span>
+                  <span class="current-price">$5.99</span>
+                </div>
+                <!-- Botón para abrir el modal -->
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-image">
+                <img src="/Front-end/images/silksong.jpg" alt="Silksong">
+                <div class="discount-badge">-45%</div>
+              </div>
+              <div class="card-content">
+                <h2 class="card-title">Hollow Knight: Silksong</h2>
+                <div class="price-container">
+                  <span class="original-price">$29.99</span>
+                  <span class="current-price">$16.49</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-image">
+                <img src="/Front-end/images/sky.jpg" alt="Sky">
+                <div class="discount-badge">-75%</div>
+              </div>
+              <div class="card-content">
+                <h2 class="card-title">Sky: Children of the Light</h2>
+                <div class="price-container">
+                  <span class="original-price">$19.99</span>
+                  <span class="current-price">$4.99</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-image">
+                <img src="/Front-end/images/valorant.jpg" alt="Valorant">
+                <div class="discount-badge">-30%</div>
+              </div>
+              <div class="card-content">
+                <h2 class="card-title">Valorant Premium Pass</h2>
+                <div class="price-container">
+                  <span class="original-price">$9.99</span>
+                  <span class="current-price">$6.99</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-image">
+                <img src="/Front-end/images/background.jpg" alt="Juego">
+                <div class="discount-badge">-80%</div>
+              </div>
+              <div class="card-content">
+                <h2 class="card-title">Juego Especial</h2>
+                <div class="price-container">
+                  <span class="original-price">$49.99</span>
+                  <span class="current-price">$9.99</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button class="btn next">&#10095;</button>
+        </div>
+      </div>
+    </div>
+    <div class="features-container">
+      <!-- Biblioteca -->
+      <section class="feature-card">
+        <h2>Explora nuestra biblioteca de juegos</h2>
+        <p>Descubre nuevos títulos y guarda tus favoritos en tu colección personal.</p>
+        <button class="feature-btn" onclick="window.location.href='#biblioteca'">Ver Biblioteca</button>
+      </section>
+
+      <!-- Estadisticas -->
+      <section class="feature-card">
+        <h2>Estadísticas de juego</h2>
+        <p>Mantente al tanto de tu progreso y logros en los juegos que amas.</p>
+        <button class="feature-btn" onclick="window.location.href='#estadisticas'">Ver Estadísticas</button>
+      </section>
+    </div>
+
+    <!-- Usuarios -->
+    <div class="cta-section">
+      <h2>¿Aún no tienes un usuario?</h2>
+      <button class="cta-btn" onclick="window.location.href='#crear-usuario'">¡Crea uno!</button>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>Colaboradores</h3>
+          <ul>
+            <li onclick="window.location.href='https://github.com/Lullaby-SQ'">Lucía Silva</li>
+            <li onclick="window.location.href='https://github.com/MineAbel'">Lautaro Cardozo</li>
+            <li onclick="window.location.href='https://pinterest.com'">Pinterest</li>
+            <li onclick="window.location.href='https://w3schools.com'">W3Schools</li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h3>Contacto</h3>
+          <ul>
+            <li onclick="window.location.href=''">Email</li>
+            <li onclick="window.location.href=''">Teléfono</li>
+            <li onclick="window.location.href='https://instagram.com'">Instagram</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-copy-right">
+        <p>&copy; 2025 Game Library. Todos los derechos reservados.</p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Modal / Overlay -->
+  <div class="overlay">
+    <div class="popup">
+      <button class="btn-cerrar">✕</button>
+
+      <div class="div-popup">
+        <!-- LADO IZQUIERDO (imagen y nombre ) -->
+        <div class="section-valoracion">
+          <h2 class="title-valoracion">Hollow Knight</h2>
+          <div class="img-valoracion">
+            <img src="/Front-end/images/Hollow_Knight.png" alt="Juego Hollow Knight">
+          </div>
+        </div>
+
+        <!-- LADO DERECHO ( descripción y generalidades ) -->
+        <div class="section-valoracion">
+          <h3>Descripción:</h3>
+          <p>
+            Enfrenta los misterios del reino de Hallownest, un mundo vasto e interconectado lleno de criaturas
+            y secretos. Explora, lucha y descubre tu destino en este metroidvania desafiante.
+          </p>
+          <!-- Categorias del juego -->
+          <div class="categorias">
+            <h3>Categorías:</h3>
+            <ul>
+              <li>Acción</li>
+              <li>Metroidvania</li>
+              <li>Aventura</li>
+            </ul>
+          </div>
+
+          <!-- Valoración en estrellas -->
+          <div class="valoracion-estrellas">
+            <h3>Valoración:</h3>
+            <div class="estrellas">
+              <span class="estrella" data-value="1">★</span>
+              <span class="estrella" data-value="2">★</span>
+              <span class="estrella" data-value="3">★</span>
+              <span class="estrella" data-value="4">★</span>
+              <span class="estrella" data-value="5">★</span>
+            </div>
+          </div>
+
+          <!-- Formulario para enviar información de usuario - con respuesta en consola -->
+          <form class="form-valoracion">
+            <label for="horas">Horas jugadas:</label>
+            <input type="number" id="horas" name="horas" min="0" placeholder="Ingesa horas jugadas">
+
+            <label for="completado">¿Completaste el juego?</label>
+            <select id="completado" name="completado">
+              <option value="" selected disabled>Selecciona una opción</option>
+              <option value="si">Sí, lo completé</option>
+              <option value="no">No, todavía no</option>
+            </select>
+
+            <label for="reseña">Reseña:</label>
+            <textarea id="reseña" name="reseña" rows="4"
+              placeholder="Escribe aquí tu opinión sobre el juego..."></textarea>
+
+            <button type="submit" class="btn-enviar">Enviar valoración</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+<!-- Scripts de pagina -->
+<script type="module" src="/src/main.jsx"></script>
+<script src="./Front-end/carrusel.js"></script>
+<script src="./Front-end/modals.js"></script>
+
+</html>
