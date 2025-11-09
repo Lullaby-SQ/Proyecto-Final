@@ -1,13 +1,52 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
-import App from './App';
-import './index.css';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import './styles/global.css';
+
+// Páginas
+import App from './App.jsx';
+import Index from './pages/Index.jsx';
+import Biblioteca from './pages/Biblioteca.jsx';
+import Contacto from './Contacto.jsx';
+
+const router = createBrowserRouter([
+  { 
+    path: '/', 
+    element: <App /> 
+  },
+  { 
+    path: '/index', 
+    element: <Index /> 
+  },
+  { 
+    path: '/biblioteca', 
+    element: <Biblioteca /> 
+  },
+  { 
+    path: '/contacto', 
+    element: <Contacto /> 
+  },
+  // Rutas adicionales para futuro
+  { 
+    path: '/estadisticas', 
+    element: <div style={{color: 'white', padding: '2rem'}}>Estadísticas - En desarrollo</div> 
+  },
+  { 
+    path: '/usuario', 
+    element: <div style={{color: 'white', padding: '2rem'}}>Usuario - En desarrollo</div> 
+  },
+  { 
+    path: '/sobre-nosotros', 
+    element: <div style={{color: 'white', padding: '2rem'}}>Sobre Nosotros - En desarrollo</div> 
+  },
+  { 
+    path: '/registro', 
+    element: <div style={{color: 'white', padding: '2rem'}}>Registro - En desarrollo</div> 
+  }
+]);
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <RouterProvider router={router} />
   </StrictMode>
 );
