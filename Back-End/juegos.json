@@ -1,0 +1,194 @@
+{
+  "juegos": [
+    {
+      "id": 1,
+      "nombre": "Ecos del Reino",
+      "descripcion": "RPG de fantasía épica con un vasto mundo abierto y decisiones que afectan la historia.",
+      "precio": 49.99,
+      "portada": "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=400&h=600&fit=crop",
+      "reseñas": [
+        {
+          "usuario": "Lucas Romero",
+          "puntuacion": 5,
+          "comentario": "Increíble historia y personajes memorables. Lo terminé tres veces y sigo encontrando cosas nuevas."
+        },
+        {
+          "usuario": "Marina Torres",
+          "puntuacion": 4,
+          "comentario": "Muy inmersivo, aunque a veces las misiones secundarias se repiten un poco."
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "nombre": "Carrera Extrema 3000",
+      "descripcion": "Juego de carreras futuristas con vehículos personalizables y pistas antigravedad.",
+      "precio": 29.99,
+      "portada": "https://images.unsplash.com/photo-1511882150382-421056c89033?w=400&h=600&fit=crop",
+      "reseñas": [
+        {
+          "usuario": "Santiago Álvarez",
+          "puntuacion": 5,
+          "comentario": "Adrenalina pura. Me encanta competir en línea con otros jugadores."
+        },
+        {
+          "usuario": "Clara Ruiz",
+          "puntuacion": 4,
+          "comentario": "Gráficos espectaculares, aunque el modo historia es algo corto."
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "nombre": "Construye y Sobrevive",
+      "descripcion": "Juego de supervivencia en un mundo postapocalíptico donde puedes construir tu refugio.",
+      "precio": 24.99,
+      "portada": "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=400&h=600&fit=crop",
+      "reseñas": [
+        {
+          "usuario": "Tomás Herrera",
+          "puntuacion": 4,
+          "comentario": "Muy adictivo. Me gusta cómo evoluciona tu base con el tiempo."
+        },
+        {
+          "usuario": "Julia Castro",
+          "puntuacion": 3,
+          "comentario": "Interesante, pero puede volverse repetitivo si juegas solo."
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "nombre": "Tácticas del Abismo",
+      "descripcion": "Juego de estrategia por turnos con combates tácticos y narrativa oscura.",
+      "precio": 34.99,
+      "portada": "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=400&h=600&fit=crop",
+      "reseñas": [
+        {
+          "usuario": "Andrés Muñoz",
+          "puntuacion": 5,
+          "comentario": "Uno de los mejores juegos tácticos que he probado. Cada decisión cuenta."
+        },
+        {
+          "usuario": "Natalia León",
+          "puntuacion": 4,
+          "comentario": "Muy bien balanceado, aunque el tutorial podría ser más claro."
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "nombre": "Cocina Caótica",
+      "descripcion": "Divertido juego cooperativo donde debes cocinar con tus amigos contra el reloj.",
+      "precio": 19.99,
+      "portada": "https://images.unsplash.com/photo-1556438758-8d49568ce18e?w=400&h=600&fit=crop",
+      "reseñas": [
+        {
+          "usuario": "Esteban Ríos",
+          "puntuacion": 5,
+          "comentario": "¡Risas garantizadas! Ideal para jugar en grupo."
+        },
+        {
+          "usuario": "Diana Varela",
+          "puntuacion": 4,
+          "comentario": "Muy divertido, pero algo estresante en niveles altos."
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "nombre": "Guerreros del Cosmos",
+      "descripcion": "Shooter espacial con campaña cooperativa y batallas PvP en línea.",
+      "precio": 39.99,
+      "portada": "https://images.unsplash.com/photo-1614732414444-096e5f1122d5?w=400&h=600&fit=crop",
+      "reseñas": [
+        {
+          "usuario": "Alejandro Peña",
+          "puntuacion": 4,
+          "comentario": "La ambientación espacial está muy bien lograda. Buen contenido multijugador."
+        },
+        {
+          "usuario": "Lucía Marín",
+          "puntuacion": 3,
+          "comentario": "El juego está bien, pero necesita más mapas y variedad de armas."
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "nombre": "Leyendas del Pixel",
+      "descripcion": "Plataformas retro con estilo pixel art y banda sonora chiptune.",
+      "precio": 14.99,
+      "portada": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=400&h=600&fit=crop",
+      "reseñas": [
+        {
+          "usuario": "Iván Serrano",
+          "puntuacion": 5,
+          "comentario": "Una joya indie. Cada nivel es un reto y el arte es precioso."
+        },
+        {
+          "usuario": "Camila Navarro",
+          "puntuacion": 4,
+          "comentario": "Muy nostálgico, pero algunos niveles son demasiado difíciles."
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "nombre": "Misterio en la Mansión",
+      "descripcion": "Aventura gráfica de misterio e investigación en una mansión encantada.",
+      "precio": 22.99,
+      "portada": "https://images.unsplash.com/photo-1518709594023-6eab9bab7b23?w=400&h=600&fit=crop",
+      "reseñas": [
+        {
+          "usuario": "Felipe Ortega",
+          "puntuacion": 4,
+          "comentario": "Excelente ambientación y puzzles. Me mantuvo intrigado todo el tiempo."
+        },
+        {
+          "usuario": "Sofía Delgado",
+          "puntuacion": 5,
+          "comentario": "¡Un thriller con mucho estilo! La narrativa es lo mejor del juego."
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "nombre": "Reinos en Guerra",
+      "descripcion": "MMORPG de fantasía con combates masivos, gremios y mundo persistente.",
+      "precio": 0.00,
+      "portada": "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=600&fit=crop",
+      "reseñas": [
+        {
+          "usuario": "Gabriel Díaz",
+          "puntuacion": 4,
+          "comentario": "Para ser free-to-play está muy bien. Aunque hay algo de pay-to-win."
+        },
+        {
+          "usuario": "Noelia Acosta",
+          "puntuacion": 5,
+          "comentario": "Llevo meses jugando y no me canso. Comunidad activa y eventos frecuentes."
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "nombre": "Simulador de Granjas 2025",
+      "descripcion": "Simulador realista de vida en el campo, con cultivos, animales y maquinaria.",
+      "precio": 44.99,
+      "portada": "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=400&h=600&fit=crop",
+      "reseñas": [
+        {
+          "usuario": "Manuel Correa",
+          "puntuacion": 5,
+          "comentario": "Relajante y muy completo. Perfecto para desconectar del estrés."
+        },
+        {
+          "usuario": "Renata Figueroa",
+          "puntuacion": 4,
+          "comentario": "Buen juego, aunque el inicio puede ser algo lento."
+        }
+      ]
+    }
+  ]
+}
