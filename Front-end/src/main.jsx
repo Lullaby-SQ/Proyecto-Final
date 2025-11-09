@@ -4,10 +4,8 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './styles/global.css';
 
 // Páginas
-import App from './App.jsx';
-import Index from './pages/Index.jsx';
+import App from './pages/App.jsx';
 import Biblioteca from './pages/Biblioteca.jsx';
-import Contacto from './Contacto.jsx';
 
 const router = createBrowserRouter([
   { 
@@ -15,16 +13,8 @@ const router = createBrowserRouter([
     element: <App /> 
   },
   { 
-    path: '/index', 
-    element: <Index /> 
-  },
-  { 
     path: '/biblioteca', 
     element: <Biblioteca /> 
-  },
-  { 
-    path: '/contacto', 
-    element: <Contacto /> 
   },
   // Rutas adicionales para futuro
   { 
