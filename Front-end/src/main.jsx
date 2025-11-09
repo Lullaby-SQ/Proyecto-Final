@@ -6,6 +6,7 @@ import './styles/global.css';
 // Páginas
 import App from './pages/App.jsx';
 import Biblioteca from './pages/Biblioteca.jsx';
+import Explora from './pages/explora.jsx';
 
 const router = createBrowserRouter([
   { 
@@ -15,6 +16,10 @@ const router = createBrowserRouter([
   { 
     path: '/biblioteca', 
     element: <Biblioteca /> 
+  },
+  {
+    path: '/explora',
+    element: <Explora />
   },
   // Rutas adicionales para futuro
   { 

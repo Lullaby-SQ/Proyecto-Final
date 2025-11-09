@@ -100,7 +100,7 @@ function Biblioteca() {
           </div>
         ))}
 
-        <div className="card-biblioteca" onClick={() => navigate('/index')}>
+        <div className="card-biblioteca" onClick={() => navigate('/explora')} style={{ cursor: 'pointer' }}>
           <div className="card-content-biblioteca">
             <h2 className="card-title">Explora Nuevos juegos</h2>
           </div>
