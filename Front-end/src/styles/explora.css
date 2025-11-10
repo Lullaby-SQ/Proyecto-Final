@@ -1,232 +1,372 @@
-.explora-page {
-  min-height: 100vh;
-  background: linear-gradient(135deg, #0a0e27 0%, #1a1a2e 50%, #16213e 100%);
-  color: #fff;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  padding: 40px 20px;
+/* ============================================
+   PÁGINA EXPLORA - ESTILOS PRINCIPALES
+   ============================================ */
+
+body {
+    overflow: visible !important;
 }
 
-/* === FILTROS === */
+.explora-page {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0a0e27 0%, #1a1a2e 50%, #16213e 100%);
+    color: #fff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 100px 20px 40px;
+}
+
+/* ============================================
+   FILTROS
+   ============================================ */
+
 .filtros {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 40px;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
 }
 
 .filtros select {
-  background: rgba(10, 14, 39, 0.6);
-  border: 2px solid rgba(138, 43, 226, 0.5);
-  border-radius: 12px;
-  color: #fff;
-  font-size: 1em;
-  padding: 10px 20px;
-  cursor: pointer;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
-  transition: all 0.3s ease;
+    background: rgba(10, 14, 39, 0.6);
+    border: 2px solid rgba(138, 43, 226, 0.5);
+    border-radius: 12px;
+    color: #fff;
+    font-size: 1em;
+    padding: 10px 20px;
+    cursor: pointer;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+    transition: all 0.3s ease;
 }
 
 .filtros select:hover {
-  border-color: #8a2be2;
-  box-shadow: 0 5px 25px rgba(138, 43, 226, 0.6);
-  transform: scale(1.05);
+    border-color: #8a2be2;
+    box-shadow: 0 5px 25px rgba(138, 43, 226, 0.6);
+    transform: scale(1.05);
 }
 
-/* === LISTA DE JUEGOS === */
+.filtros select option {
+    background-color: #16213e;
+    color: #fff;
+}
+
+/* ============================================
+   LISTA DE JUEGOS
+   ============================================ */
+
 .juegos-lista {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 30px;
-  justify-content: center;
-  max-width: 1400px;
-  margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    justify-content: center;
+    max-width: 1400px;
+    margin: 0 auto;
 }
 
-/* === TARJETAS DE JUEGOS === */
+/* ============================================
+   TARJETAS DE JUEGOS
+   ============================================ */
+
 .juego-card {
-  background: rgba(10, 14, 39, 0.7);
-  border: 2px solid rgba(138, 43, 226, 0.3);
-  border-radius: 20px;
-  padding: 20px;
-  text-align: center;
-  backdrop-filter: blur(10px);
-  transition: all 0.4s ease;
-  cursor: pointer;
-  overflow: hidden;
-  position: relative;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    background: rgba(10, 14, 39, 0.7);
+    border: 2px solid rgba(138, 43, 226, 0.3);
+    border-radius: 20px;
+    min-height: 400px;
+    padding: 20px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    transition: all 0.4s ease;
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
 }
 
 .juego-card:hover {
-  transform: translateY(-10px) scale(1.02);
-  border-color: rgba(138, 43, 226, 0.7);
-  box-shadow: 0 20px 60px rgba(138, 43, 226, 0.3);
+    transform: translateY(-10px) scale(1.02);
+    border-color: rgba(138, 43, 226, 0.7);
+    box-shadow: 0 20px 60px rgba(138, 43, 226, 0.3);
 }
 
 /* Efecto de luz diagonal */
 .juego-card::before {
-  content: "";
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(
-    45deg,
-    transparent,
-    rgba(138, 43, 226, 0.1),
-    transparent
-  );
-  transform: rotate(45deg);
-  transition: all 0.6s ease;
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg,
+            transparent,
+            rgba(138, 43, 226, 0.1),
+            transparent);
+    transform: rotate(45deg);
+    transition: all 0.6s ease;
 }
 
 .juego-card:hover::before {
-  left: 100%;
+    left: 100%;
 }
 
 /* Imagen */
 .juego-card img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  border-radius: 15px;
-  margin-bottom: 15px;
-  transition: transform 0.4s ease;
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 15px;
+    margin-bottom: 15px;
+    transition: transform 0.4s ease;
 }
 
 .juego-card:hover img {
-  transform: scale(1.05);
+    transform: scale(1.05);
 }
 
 /* Título */
 .juego-card h3 {
-  font-size: 1.4em;
-  margin-bottom: 8px;
-  background: linear-gradient(90deg, #8a2be2, #00bfff);
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
+    font-size: 1.4em;
+    margin-bottom: 8px;
+    background: linear-gradient(90deg, #8a2be2, #00bfff);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
 }
 
-/* Categoría y precio */
+/* Categoría */
 .juego-card p {
-  font-size: 1em;
-  color: #b8c5d6;
-  margin: 5px 0;
+    font-size: 1em;
+    color: #b8c5d6;
+    margin: 5px 0;
 }
+
+/* ============================================
+   BOTÓN FLOTANTE AGREGAR
+   ============================================ */
 
 .btn-agregar {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  background: linear-gradient(135deg, #8a2be2, #4169e1);
-  color: white;
-  font-size: 2rem;
-  border: none;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  cursor: pointer;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-  transition: 0.3s;
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: linear-gradient(135deg, #8a2be2, #4169e1);
+    color: white;
+    font-size: 2rem;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transition: 0.3s;
+    z-index: 1100;
+    /* 👈 IMPORTANTE: Mayor que el navbar (1000) */
 }
 
 .btn-agregar:hover {
-  transform: scale(1.1);
+    transform: scale(1.1);
 }
 
+/* ============================================
+   MODALES (Versión mejorada y limpia)
+   ============================================ */
+
 .modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.7);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 5000;
+    animation: fadeIn 0.3s ease-in-out;
+    backdrop-filter: blur(4px);
+    /* 🔹 efecto de desenfoque elegante */
 }
 
 .modal {
-  background: rgba(20, 25, 50, 0.95);
-  border: 2px solid #8a2be2;
-  border-radius: 20px;
-  padding: 30px;
-  color: #fff;
-  width: 90%;
-  max-width: 500px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-  animation: fadeIn 0.3s ease-in-out;
-}
-
-.modal h2 {
-  margin-bottom: 20px;
-}
-
-.modal form input,
-.modal form select,
-.modal form textarea {
-  width: 100%;
-  margin-bottom: 15px;
-  padding: 10px;
-  border-radius: 10px;
-  border: none;
-  background: rgba(255,255,255,0.1);
-  color: white;
-}
-
-.modal-buttons {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
-}
-
-.modal-buttons button {
-  background: linear-gradient(135deg, #8a2be2, #4169e1);
-  border: none;
-  padding: 10px 20px;
-  border-radius: 10px;
-  color: white;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.modal-buttons button:hover {
-  transform: scale(1.05);
-}
-
-.modal-img {
-  width: 100%;
-  border-radius: 10px;
-  margin-bottom: 15px;
+    position: relative;
+    background: rgba(25, 30, 60, 0.97);
+    display: flex;
+    flex-direction: column;
+    border: 2px solid #8a2be2;
+    border-radius: 18px;
+    padding: 30px 25px;
+    color: #fff;
+    width: 90%;
+    max-width: 480px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.6);
+    animation: slideUp 0.35s ease-in-out;
+    transform: translateY(0);
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.9); }
-  to { opacity: 1; transform: scale(1); }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
-/* === RESPONSIVE === */
-@media (max-width: 768px) {
-  .explora-page {
-    padding: 20px;
-  }
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px) scale(0.9);
+    }
 
-  .filtros select {
-    font-size: 0.9em;
-    padding: 8px 15px;
-  }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
 
-  .juegos-lista {
-    gap: 20px;
-  }
+/* Cabecera del modal */
+.modal h2 {
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+    text-align: center;
+    background: linear-gradient(90deg, #8a2be2, #00bfff);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}
 
-  .juego-card {
-    padding: 15px;
-  }
+/* Imagen en modal */
+.modal img {
+    width: 100%;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    object-fit: cover;
+}
 
-  .juego-card h3 {
-    font-size: 1.2em;
-  }
+/* Texto del modal */
+.modal p {
+    margin: 10px 0;
+    line-height: 1.6;
+    color: #ccd2e0;
+    text-align: justify;
+}
+
+/* Botones del modal */
+.modal-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 25px;
+    gap: 10px;
+}
+
+.modal-buttons button,
+.modal form button[type="submit"] {
+    background: linear-gradient(135deg, #8a2be2, #4169e1);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 1em;
+    font-weight: 600;
+    flex: 1;
+}
+
+.modal-buttons button:hover,
+.modal form button[type="submit"]:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 20px rgba(138, 43, 226, 0.5);
+}
+
+/* Botón eliminar (rojo) */
+.btn-eliminar {
+    background: linear-gradient(135deg, #e74c3c, #c0392b) !important;
+}
+
+.btn-eliminar:hover {
+    box-shadow: 0 5px 20px rgba(231, 76, 60, 0.5) !important;
+}
+
+/* Checkboxes */
+.categorias-checkbox {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+
+.categorias-checkbox label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 6px;
+    transition: background 0.3s ease;
+}
+
+.categorias-checkbox label:hover {
+    background: rgba(138, 43, 226, 0.25);
+}
+
+/* ============================================
+   FORMULARIOS DEL MODAL
+   ============================================ */
+
+.modal form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.modal form input[type="text"],
+.modal form input[type="file"],
+.modal form textarea,
+.modal .input-imagen {
+  background: rgba(255, 255, 255, 0.08);
+  border: 2px solid rgba(138, 43, 226, 0.4);
+  color: #fff;
+  border-radius: 12px;
+  padding: 12px 15px;
+  font-size: 1em;
+  outline: none;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.modal form input[type="text"]:focus,
+.modal form textarea:focus,
+.modal form input[type="file"]:focus {
+  border-color: #8a2be2;
+  box-shadow: 0 0 10px rgba(138, 43, 226, 0.6);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.modal form textarea {
+  min-height: 90px;
+  resize: none;
+}
+
+.input-imagen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.input-imagen label {
+  font-weight: 600;
+  color: #b3a8ff;
+}
+
+.preview-imagen {
+  width: 100%;
+  max-height: 180px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid rgba(138, 43, 226, 0.5);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
+}
+
+.preview-imagen:hover {
+  transform: scale(1.02);
 }

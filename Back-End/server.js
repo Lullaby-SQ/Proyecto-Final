@@ -1,133 +1,89 @@
-const express = require('express');
-const cors = require('cors');
-const fs = require('fs');
-const path = require('path');
+// ===========================
+//  IMPORTACIONES Y CONFIG
+// ===========================
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = 3001;
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 
-// Función para leer el archivo JSON de juegos
-const leerJuegos = () => {
-    try {
-        const dataPath = path.join(__dirname, 'juegos.json');
-        const jsonData = fs.readFileSync(dataPath, 'utf-8');
-        return JSON.parse(jsonData);
-    } catch (error) {
-        console.error('Error al leer el archivo juegos.json:', error);
-        return { juegos: [] };
-    }
-};
+// ===========================
+//  CONEXIÓN A MONGO ATLAS
+// ===========================
+// contraseña : iI4sE4BHf2DcOchh
+const uri = "mongodb+srv://Lautaro:iI4sE4BHf2DcOchh@lau.fo9mnil.mongodb.net/juegosdb?retryWrites=true&w=majority&appName=Lau";
 
-// Ruta principal
-app.get('/', (req, res) => {
-    res.json({
-        message: '🎮 API de Juegos - Servidor funcionando correctamente',
-        version: '1.0.0',
-        endpoints: {
-            'GET /api/juegos': 'Obtener todos los juegos',
-            'GET /api/juegos/:id': 'Obtener un juego específico por ID',
-            'GET /health': 'Verificar estado del servidor'
-        }
-    });
+
+mongoose
+  .connect(uri)
+  .then(() => console.log("Conectado a MongoDB Atlas"))
+  .catch((err) => console.error("Error al conectar con MongoDB:", err));
+
+// ===========================
+//  DEFINICIÓN DEL MODELO
+// ===========================
+const juegoSchema = new mongoose.Schema({
+  nombre: String,
+  descripcion: String,
+  portada: String,
+  categorias: [String],
 });
 
-// ========== ENDPOINTS PARA JUEGOS ==========
+const Juego = mongoose.model("Juego", juegoSchema);
 
-// Endpoint para obtener todos los juegos
-app.get('/api/juegos', (req, res) => {
-    try {
-        const data = leerJuegos();
-        res.json({
-            success: true,
-            count: data.juegos.length,
-            data: data.juegos
-        });
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            error: 'Error interno del servidor',
-            message: error.message
-        });
-    }
+// ===========================
+//  RUTAS API
+// ===========================
+
+// Obtener todos los juegos
+app.get("/api/juegos", async (req, res) => {
+  try {
+    const juegos = await Juego.find();
+    res.json(juegos);
+  } catch (err) {
+    res.status(500).json({ error: "Error al obtener los juegos" });
+  }
 });
 
-// Endpoint para obtener un juego específico por ID
-app.get('/api/juegos/:id', (req, res) => {
-    try {
-        const data = leerJuegos();
-        const juegoId = parseInt(req.params.id);
-        const juego = data.juegos.find(j => j.id === juegoId);
-        
-        if (!juego) {
-            return res.status(404).json({
-                success: false,
-                error: 'Juego no encontrado',
-                message: `No se encontró un juego con ID ${juegoId}`
-            });
-        }
-        
-        res.json({
-            success: true,
-            data: juego
-        });
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            error: 'Error interno del servidor',
-            message: error.message
-        });
-    }
+// Crear un nuevo juego
+app.post("/api/juegos", async (req, res) => {
+  try {
+    const nuevoJuego = new Juego(req.body);
+    const guardado = await nuevoJuego.save();
+    res.json(guardado);
+  } catch (err) {
+    res.status(500).json({ error: "Error al crear el juego" });
+  }
 });
 
-// Endpoint para verificar el estado del servidor
-app.get('/health', (req, res) => {
-    res.json({
-        status: 'OK',
-        timestamp: new Date().toISOString(),
-        uptime: process.uptime(),
-        message: 'Servidor funcionando correctamente'
-    });
+// Actualizar un juego
+app.put("/api/juegos/:id", async (req, res) => {
+  try {
+    const actualizado = await Juego.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.json(actualizado);
+  } catch (err) {
+    res.status(500).json({ error: "Error al actualizar el juego" });
+  }
 });
 
-// Manejo de rutas no encontradas
-app.use('*', (req, res) => {
-    res.status(404).json({
-        success: false,
-        error: 'Endpoint no encontrado',
-        message: `La ruta ${req.originalUrl} no existe`,
-        availableEndpoints: [
-            'GET /',
-            'GET /api/juegos',
-            'GET /api/juegos/:id',
-            'GET /health'
-        ]
-    });
+// Eliminar un juego
+app.delete("/api/juegos/:id", async (req, res) => {
+  try {
+    await Juego.findByIdAndDelete(req.params.id);
+    res.json({ mensaje: "Juego eliminado correctamente" });
+  } catch (err) {
+    res.status(500).json({ error: "Error al eliminar el juego" });
+  }
 });
 
-// Manejo global de errores
-app.use((error, req, res, next) => {
-    console.error('Error no controlado:', error);
-    res.status(500).json({
-        success: false,
-        error: 'Error interno del servidor',
-        message: 'Algo salió mal en el servidor'
-    });
-});
-
-// Iniciar el servidor
+// ===========================
+//  INICIAR SERVIDOR
+// ===========================
 app.listen(PORT, () => {
-    console.log('🚀 ======================================');
-    console.log(`🎮 Servidor de Juegos iniciado`);
-    console.log(`🌐 URL: http://localhost:${PORT}`);
-    console.log(`📡 API Juegos: http://localhost:${PORT}/api/juegos`);
-    console.log('🚀 ======================================');
-    
-    // Verificar que los archivos JSON existen
-
-    const dataJuegos = leerJuegos();
-    console.log(`🎮 Cargados ${dataJuegos.juegos.length} juegos en la base de datos`);
+  console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
 });
