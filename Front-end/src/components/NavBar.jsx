@@ -9,7 +9,7 @@ function Navbar() {
       <div className="div-navbar">
         <h1 className="title">
           <a href="/" onClick={(e) => { e.preventDefault(); navigate('/'); }}>
-            Nombre-Logo
+            L & L Games
           </a>
         </h1>
         <ul>
