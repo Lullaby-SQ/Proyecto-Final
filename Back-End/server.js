@@ -1,71 +1,72 @@
 // ===========================
 //  IMPORTACIONES Y CONFIG
 // ===========================
-const express = require("express");
-const mongoose = require("mongoose");
-const cors = require("cors");
+const express = require("express"); // Framework para crear el servidor
+const mongoose = require("mongoose"); // Conexión a MongoDB
+const cors = require("cors"); // Permite recibir peticiones desde el front-end, permite conectarse desde otro dominio
 
-const app = express();
-const PORT = 3001;
+const app = express(); // Crear la aplicación Express
+const PORT = 3001; // Puerto del servidor
 
 // Middleware
-app.use(cors());
-app.use(express.json({limit: '50mb'})); // Aumentamos límite para imágenes Base64
-app.use(express.urlencoded({limit: '50mb', extended: true}));
+app.use(cors()); // Habilitar CORS para todas las rutas
+app.use(express.json({limit: '50mb'})); // Aumentamos límite para imágenes Base64, interpretar JSON
+app.use(express.urlencoded({limit: '50mb', extended: true})); // Para interpretar datos de formularios
 
 // ===========================
-//  CONEXIÓN A MONGO ATLAS
+//  CONEXIÓN A MONGO ATLAS    
 // ===========================
+//Usuario: Lautaro, Contraseña: iI4sE4BHf2DcOchh, Base de datos: juegosdb
 const uri = "mongodb+srv://Lautaro:iI4sE4BHf2DcOchh@lau.fo9mnil.mongodb.net/juegosdb?retryWrites=true&w=majority&appName=Lau";
 
 mongoose
-  .connect(uri)
-  .then(() => console.log("Conectado a MongoDB Atlas"))
-  .catch((err) => console.error("Error al conectar con MongoDB:", err));
+  .connect(uri) // ejecuta la conexión con mongo db
+  .then(() => console.log("Conectado a MongoDB Atlas")) // Si la conexión a la base de datos se dió correctamente muestra el siguiente mensaje en la terminal
+  .catch((err) => console.error("Error al conectar con MongoDB:", err)); // En caso de error de conexión muestra el siguiente error
 
-// ===========================
-//  DEFINICIÓN DEL MODELO ACTUALIZADO
-// ===========================
+// =====================================
+//  DEFINICIÓN DEL MODELO DE JUEGO
+// =====================================
 const juegoSchema = new mongoose.Schema({
-  nombre: { type: String, required: true },
-  descripcion: { type: String, default: "" },
-  portada: { type: String, default: "" },
-  categorias: [String],
+  nombre: { type: String, required: true }, // Definimos que tenga un nombre de tipo string y que se necesario para el registro.
+  descripcion: { type: String, default: "" }, // Definimos una descripción del juego
+  portada: { type: String, default: "" }, // URL o Base64 de la imagen de portada
+  categorias: [String], // Array de categorías que puede tener un juego
   
   // Campos de precio
   precio: { 
     type: Number, 
     default: 0,
     min: 0
-  },
+  }, // Definimos el precio del juego, con un valor inicial de 0
   tieneDescuento: { 
     type: Boolean, 
     default: false 
-  },
+  }, // Definimos el desceuunto del juego si es que tiene o no, por defecto los juegos vienen sin descuento.
   porcentajeDescuento: { 
     type: Number, 
     default: 0,
     min: 0,
     max: 100
-  },
+  }, // en caso de descuento se le aplicara un porcentaje de descuento, por defecto 0, y con un maximo de 100%
   
-  //Campos de valoración del usuario
+  //Campos de valoración del usuario - solo para saber si el usuario tiene el juego en su biblioteca
   valoracionUsuario: {
-    estrellas: {
+    estrellas: { 
       type: Number,
       min: 0,
       max: 5,
       default: 0
-    },
+    }, // Definimos un puntaje de estrellas de 0 a 5
     horasJugadas: {
       type: Number,
       min: 0,
       default: 0
-    },
+    }, // Definimos las horas jugadas, con un valor inicial de 0
     completado: {
       type: Boolean,
       default: false
-    },
+    }, 
     reseña: {
       type: String,
       default: ""
