@@ -1,59 +1,62 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Navbar from '../components/Navbar';
+import Navbar from '../components/NavBar';
 import '../styles/carrusel.css';
 import '../styles/global.css';
 
 function Index() {
   const navigate = useNavigate();
   const [current, setCurrent] = useState(0);
+  const [juegosDescuento, setJuegosDescuento] = useState([]);
+  const [cargando, setCargando] = useState(true);
+  const [modalAbierto, setModalAbierto] = useState(false);
+  const [juegoSeleccionado, setJuegoSeleccionado] = useState(null);
+  const [valorEstrellas, setValorEstrellas] = useState(0);
 
-  const juegos = [
-    {
-      id: 1,
-      titulo: "Hollow Knight",
-      imagen: "/Front-end/images/Hollow_Knight.png",
-      descuento: "-60%",
-      precioOriginal: "$14.99",
-      precioActual: "$5.99"
-    },
-    {
-      id: 2,
-      titulo: "Hollow Knight: Silksong",
-      imagen: "/Front-end/images/silksong.jpg",
-      descuento: "-45%",
-      precioOriginal: "$29.99",
-      precioActual: "$16.49"
-    },
-    {
-      id: 3,
-      titulo: "Sky: Children of the Light",
-      imagen: "/Front-end/images/sky.jpg",
-      descuento: "-75%",
-      precioOriginal: "$19.99",
-      precioActual: "$4.99"
-    },
-    {
-      id: 4,
-      titulo: "Valorant Premium Pass",
-      imagen: "/Front-end/images/valorant.jpg",
-      descuento: "-30%",
-      precioOriginal: "$9.99",
-      precioActual: "$6.99"
-    },
-    {
-      id: 5,
-      titulo: "Juego Especial",
-      imagen: "/Front-end/images/background.jpg",
-      descuento: "-80%",
-      precioOriginal: "$49.99",
-      precioActual: "$9.99"
-    }
-  ];
+  // Obtener juegos con descuento desde la API
+  useEffect(() => {
+    const obtenerJuegosConDescuento = async () => {
+      try {
+        const res = await fetch("http://localhost:3001/api/juegos/descuentos");
+        if (!res.ok) throw new Error("Error al cargar juegos");
+        
+        const data = await res.json();
+        
+        // Si hay juegos con descuento, los usamos
+        if (data.length > 0) {
+          const adaptados = data.map(j => ({
+            id: j._id,
+            titulo: j.nombre,
+            descripcion: j.descripcion || "Sin descripción disponible",
+            imagen: j.portada || "/Front-end/images/placeholder.jpg",
+            categorias: j.categorias || ["Sin categoría"],
+            descuento: `-${j.porcentajeDescuento}%`,
+            precioOriginal: `${j.precio.toFixed(2)}`,
+            precioActual: `${(j.precio * (1 - j.porcentajeDescuento / 100)).toFixed(2)}`
+          }));
+          setJuegosDescuento(adaptados);
+        } else {
+          // Si no hay juegos con descuento, mostramos ejemplos por defecto
+          setJuegosDescuento(juegosEjemplo);
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        // En caso de error, mostramos juegos de ejemplo
+        setJuegosDescuento(juegosEjemplo);
+      } finally {
+        setCargando(false);
+      }
+    };
+
+    obtenerJuegosConDescuento();
+  }, []);
+
 
   useEffect(() => {
-    updateCarousel();
-  }, [current]);
+    if (juegosDescuento.length > 0) {
+      updateCarousel();
+    }
+  }, [current, juegosDescuento]);
 
   const updateCarousel = () => {
     const cards = document.querySelectorAll('.card');
@@ -90,11 +93,61 @@ function Index() {
   };
 
   const nextSlide = () => {
-    setCurrent((current + 1) % juegos.length);
+    setCurrent((current + 1) % juegosDescuento.length);
   };
 
   const prevSlide = () => {
-    setCurrent((current - 1 + juegos.length) % juegos.length);
+    setCurrent((current - 1 + juegosDescuento.length) % juegosDescuento.length);
+  };
+
+  // Funciones para el modal de valoración
+  const abrirModal = (juego) => {
+    setJuegoSeleccionado(juego);
+    setModalAbierto(true);
+    setValorEstrellas(0);
+    document.body.style.overflow = 'hidden'; // Bloquear scroll del body
+  };
+
+  const cerrarModal = () => {
+    setModalAbierto(false);
+    setJuegoSeleccionado(null);
+    setValorEstrellas(0);
+    document.body.style.overflow = 'auto'; // Restaurar scroll
+  };
+
+  const handleEstrellaClick = (valor) => {
+    setValorEstrellas(valor);
+  };
+
+  const handleSubmitValoracion = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    
+    const datos = {
+      estrellas: valorEstrellas,
+      horasJugadas: parseFloat(formData.get('horas')) || 0,
+      completado: formData.get('completado'),
+      reseña: formData.get('reseña')
+    };
+    
+    try {
+      const response = await fetch(`http://localhost:3001/api/juegos/${juegoSeleccionado.id}/valorar`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(datos)
+      });
+
+      if (!response.ok) throw new Error('Error al guardar valoración');
+
+      const resultado = await response.json();
+      console.log('Valoración guardada:', resultado);
+      
+      alert(`¡Valoración de "${juegoSeleccionado.titulo}" guardada en tu biblioteca!`);
+      cerrarModal();
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Error al guardar la valoración. Por favor intenta de nuevo.');
+    }
   };
 
   return (
@@ -108,28 +161,45 @@ function Index() {
 
         <div className="div-width-carrusel">
           <div className="carousel-container">
-            <h1>Ofertas Especiales</h1>
-            <button className="btn prev" onClick={prevSlide}>&#10094;</button>
+            <h1>
+              {cargando ? "Cargando ofertas..." : 
+               juegosDescuento.length > 0 ? "Ofertas Especiales" : "Agrega juegos con descuento"}
+            </h1>
             
-            <div className="carousel" id="carousel">
-              {juegos.map((juego) => (
-                <div className="card" key={juego.id}>
-                  <div className="card-image">
-                    <img src={juego.imagen} alt={juego.titulo} />
-                    <div className="discount-badge">{juego.descuento}</div>
-                  </div>
-                  <div className="card-content">
-                    <h2 className="card-title">{juego.titulo}</h2>
-                    <div className="price-container">
-                      <span className="original-price">{juego.precioOriginal}</span>
-                      <span className="current-price">{juego.precioActual}</span>
+            {!cargando && juegosDescuento.length > 0 && (
+              <>
+                <button className="btn prev" onClick={prevSlide}>&#10094;</button>
+                
+                <div className="carousel" id="carousel">
+                  {juegosDescuento.map((juego) => (
+                    <div 
+                      className="card" 
+                      key={juego.id}
+                      onClick={() => abrirModal(juego)}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      <div className="card-image">
+                        <img 
+                          src={juego.imagen} 
+                          alt={juego.titulo}
+                          onError={(e) => e.target.src = '/Front-end/images/placeholder.jpg'}
+                        />
+                        <div className="discount-badge">{juego.descuento}</div>
+                      </div>
+                      <div className="card-content">
+                        <h2 className="card-title">{juego.titulo}</h2>
+                        <div className="price-container">
+                          <span className="original-price">{juego.precioOriginal}</span>
+                          <span className="current-price">{juego.precioActual}</span>
+                        </div>
+                      </div>
                     </div>
-                  </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-            
-            <button className="btn next" onClick={nextSlide}>&#10095;</button>
+                
+                <button className="btn next" onClick={nextSlide}>&#10095;</button>
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -181,6 +251,99 @@ function Index() {
           <p>&copy; 2025 Game Library. Todos los derechos reservados.</p>
         </div>
       </footer>
+
+      {/* 🎮 MODAL DE VALORACIÓN */}
+      {modalAbierto && juegoSeleccionado && (
+        <div className="overlay-valoracion" style={{ display: 'flex', opacity: '1' }}>
+          <div className="popup-valoracion">
+            <button className="btn-cerrar" onClick={cerrarModal}>✕</button>
+
+            <div className="div-popup">
+              {/* LADO IZQUIERDO (imagen y nombre) */}
+              <div className="section-valoracion">
+                <h2 className="title-valoracion">{juegoSeleccionado.titulo}</h2>
+                <div className="img-valoracion">
+                  <img 
+                    src={juegoSeleccionado.imagen} 
+                    alt={juegoSeleccionado.titulo}
+                    onError={(e) => e.target.src = '/Front-end/images/placeholder.jpg'}
+                  />
+                </div>
+                <div className="precio-modal">
+                  <span className="precio-original-modal">{juegoSeleccionado.precioOriginal}</span>
+                  <span className="precio-actual-modal">{juegoSeleccionado.precioActual}</span>
+                  <span className="descuento-badge-modal">{juegoSeleccionado.descuento}</span>
+                </div>
+              </div>
+
+              {/* LADO DERECHO (descripción y formulario) */}
+              <div className="section-valoracion">
+                <h3>Descripción:</h3>
+                <p>{juegoSeleccionado.descripcion}</p>
+
+                {/* Categorías del juego */}
+                <div className="categorias">
+                  <h3>Categorías:</h3>
+                  <ul>
+                    {juegoSeleccionado.categorias?.map((cat, index) => (
+                      <li key={index}>{cat}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Formulario de valoración */}
+                <form className="form-valoracion" onSubmit={handleSubmitValoracion}>
+                  <h2>Tu Valoración</h2>
+
+                  {/* Valoración en estrellas */}
+                  <div className="valoracion-estrellas">
+                    <h3>Calificación:</h3>
+                    <div className="estrellas">
+                      {[1, 2, 3, 4, 5].map((valor) => (
+                        <span
+                          key={valor}
+                          className={`estrella ${valorEstrellas >= valor ? 'active' : ''}`}
+                          onClick={() => handleEstrellaClick(valor)}
+                        >
+                          ★
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <label htmlFor="horas-index">Horas jugadas:</label>
+                  <input 
+                    type="number" 
+                    id="horas-index" 
+                    name="horas" 
+                    min="0" 
+                    placeholder="Ingresa horas jugadas"
+                    required
+                  />
+
+                  <label htmlFor="completado-index">¿Completaste el juego?</label>
+                  <select id="completado-index" name="completado" required>
+                    <option value="" disabled selected>Selecciona una opción</option>
+                    <option value="si">Sí, lo completé</option>
+                    <option value="no">No, todavía no</option>
+                  </select>
+
+                  <label htmlFor="reseña-index">Reseña:</label>
+                  <textarea 
+                    id="reseña-index" 
+                    name="reseña" 
+                    rows="4"
+                    placeholder="Escribe aquí tu opinión sobre el juego..."
+                    required
+                  />
+
+                  <button type="submit" className="btn-enviar">Guardar Valoración</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

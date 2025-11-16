@@ -5,7 +5,7 @@ import './styles/global.css';
 
 // Páginas
 import App from './pages/App.jsx';
-import Biblioteca from './pages/Biblioteca.jsx';
+import Biblioteca from './pages/biblioteca.jsx';
 import Explora from './pages/explora.jsx';
 
 const router = createBrowserRouter([

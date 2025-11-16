@@ -370,3 +370,129 @@ body {
 .preview-imagen:hover {
   transform: scale(1.02);
 }
+
+/* Sección de precio */
+.precio-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.precio-section label {
+  font-weight: 600;
+  color: #b3a8ff;
+}
+
+.precio-section input[type="number"] {
+  background: rgba(255, 255, 255, 0.08);
+  border: 2px solid rgba(138, 43, 226, 0.4);
+  color: #fff;
+  border-radius: 12px;
+  padding: 12px 15px;
+  font-size: 1em;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.precio-section input[type="number"]:focus {
+  border-color: #8a2be2;
+  box-shadow: 0 0 10px rgba(138, 43, 226, 0.6);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* Sección de descuento */
+.descuento-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 15px;
+  background: rgba(138, 43, 226, 0.1);
+  border-radius: 12px;
+  border: 1px solid rgba(138, 43, 226, 0.3);
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  color: #e8ebff;
+  font-weight: 500;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: #8a2be2;
+}
+
+.descuento-section input[type="number"] {
+  background: rgba(255, 255, 255, 0.08);
+  border: 2px solid rgba(138, 43, 226, 0.4);
+  color: #fff;
+  border-radius: 12px;
+  padding: 12px 15px;
+  font-size: 1em;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.descuento-section input[type="number"]:focus {
+  border-color: #8a2be2;
+  box-shadow: 0 0 10px rgba(138, 43, 226, 0.6);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* Información de precios en modal de detalles */
+.precio-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  background: rgba(138, 43, 226, 0.15);
+  border-radius: 12px;
+  margin: 15px 0;
+  flex-wrap: wrap;
+}
+
+.precio-normal {
+  font-size: 1.8em;
+  font-weight: bold;
+  color: #00ff88;
+}
+
+.precio-original {
+  font-size: 1.2em;
+  color: #808080;
+  text-decoration: line-through;
+}
+
+.precio-descuento {
+  font-size: 1.8em;
+  font-weight: bold;
+  color: #00ff88;
+}
+
+.badge-descuento {
+  background: linear-gradient(135deg, #8a2be2, #4169e1);
+  color: white;
+  padding: 8px 15px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1.2em;
+  box-shadow: 0 4px 15px rgba(138, 43, 226, 0.5);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .precio-info {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .precio-normal,
+  .precio-descuento {
+    font-size: 1.5em;
+  }
+}
