@@ -13,7 +13,7 @@
 // 3. Ejemplo: import { obtenerJuegos, crearJuego } from '../utils/apiJuegos'
 // ============================================
 
-const URL_API = "http://localhost:3000/api/juegos";
+const URL_API = "http://localhost:3002/api/juegos";
 
 // ============================================
 // OBTENER TODOS LOS JUEGOS (READ)
