@@ -7,7 +7,7 @@ import './styles/global.css';
 import App from './pages/App.jsx';
 import Biblioteca from './pages/biblioteca.jsx';
 import Explora from './pages/explora.jsx';
-import SobreNosotros from './pages/sobre-nosotros.jsx';
+import Exploracion from './pages/Exploracion.jsx';
 
 const router = createBrowserRouter([
   { 
@@ -22,7 +22,10 @@ const router = createBrowserRouter([
     path: '/explora',
     element: <Explora />
   },
-  // Rutas adicionales para futuro
+  { 
+    path: '/exploracion',
+    element: <Exploracion /> 
+  },
   { 
     path: '/estadisticas', 
     element: <div style={{color: 'white', padding: '2rem'}}>Estadísticas - En desarrollo</div> 
@@ -33,7 +36,7 @@ const router = createBrowserRouter([
   },
   { 
     path: '/sobre-nosotros', 
-    element: <SobreNosotros /> 
+    element: <div style={{color: 'white', padding: '2rem'}}>Sobre Nosotros - En desarrollo</div> 
   },
   { 
     path: '/registro', 

@@ -123,7 +123,7 @@ function Biblioteca() {
       <Navbar />
       
       <div className="container-title-biblioteca">
-        <h2 className="title-biblioteca">Mi Biblioteca</h2>
+        <h2 className="title-biblioteca">Mis Juegos</h2>
       </div>
 
       <div className="container-subtitle-biblioteca">

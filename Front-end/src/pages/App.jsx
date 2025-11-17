@@ -208,7 +208,7 @@ function Index() {
         <section className="feature-card">
           <h2>Explora nuestra biblioteca de juegos</h2>
           <p>Descubre nuevos títulos y guarda tus favoritos en tu colección personal.</p>
-          <button className="feature-btn" onClick={() => navigate('/biblioteca')}>
+          <button className="feature-btn" onClick={() => navigate('/Exploracion')}>
             Ver Biblioteca
           </button>
         </section>
@@ -216,17 +216,10 @@ function Index() {
         <section className="feature-card">
           <h2>Estadísticas de juego</h2>
           <p>Mantente al tanto de tu progreso y logros en los juegos que amas.</p>
-          <button className="feature-btn" onClick={() => navigate('/estadisticas')}>
+          <button className="feature-btn" onClick={() => navigate('/biblioteca')}>
             Ver Estadísticas
           </button>
         </section>
-      </div>
-
-      <div className="cta-section">
-        <h2>¿Aún no tienes un usuario?</h2>
-        <button className="cta-btn" onClick={() => navigate('/registro')}>
-          ¡Crea uno!
-        </button>
       </div>
 
       <footer>
