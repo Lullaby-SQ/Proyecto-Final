@@ -4,7 +4,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-// Cargamos variables de entorno desde .env
 require('dotenv').config();
 
 const app = express();
@@ -12,18 +11,16 @@ const PORT = 3001;
 
 // Middleware
 app.use(cors());
-app.use(express.json({limit: '50mb'})); // Aumentamos límite para imágenes Base64
+app.use(express.json({limit: '50mb'}));
 app.use(express.urlencoded({limit: '50mb', extended: true}));
 
 // ===========================
-//  CONEXIÓN A MONGO ATLAS (desde .env)
+//  CONEXIÓN A MONGO ATLAS
 // ===========================
-// Guardamos la URI de conexión en la variable de entorno MONGO_URI.
-// Si no se especifica, hacemos fallback a una base local para desarrollo.
 const uri = process.env.MONGO_URI || 'mongodb://localhost:27017/juegosdb';
 
 if (!process.env.MONGO_URI) {
-  console.warn('⚠️  No se ha encontrado MONGO_URI en .env: se usará la URI local por defecto.');
+  console.warn('No se ha encontrado MONGO_URI en .env: se usará la URI local por defecto.');
 }
 
 mongoose
@@ -32,7 +29,7 @@ mongoose
   .catch((err) => console.error("Error al conectar con MongoDB:", err));
 
 // ===========================
-//  DEFINICIÓN DEL MODELO ACTUALIZADO
+//  MODELO ACTUALIZADO (CORREGIDO)
 // ===========================
 const juegoSchema = new mongoose.Schema({
   nombre: { type: String, required: true },
@@ -40,7 +37,6 @@ const juegoSchema = new mongoose.Schema({
   portada: { type: String, default: "" },
   categorias: [String],
   
-  // Campos de precio
   precio: { 
     type: Number, 
     default: 0,
@@ -100,7 +96,6 @@ juegoSchema.virtual('enBiblioteca').get(function() {
   return this.valoracionUsuario.fechaValoracion !== null;
 });
 
-// Aseguramos que los virtuals se incluyan en JSON
 juegoSchema.set('toJSON', { virtuals: true });
 juegoSchema.set('toObject', { virtuals: true });
 
@@ -110,7 +105,6 @@ const Juego = mongoose.model("Juego", juegoSchema);
 //  RUTAS API
 // ===========================
 
-// Obtener todos los juegos
 app.get("/api/juegos", async (req, res) => {
   try {
     const juegos = await Juego.find();
@@ -120,13 +114,12 @@ app.get("/api/juegos", async (req, res) => {
   }
 });
 
-//Obtener solo juegos con descuento
 app.get("/api/juegos/descuentos", async (req, res) => {
   try {
     const juegosConDescuento = await Juego.find({ 
       tieneDescuento: true,
-      porcentajeDescuento: { $gt: 0 } // Mayor que 0
-    }).limit(10); // Limitamos a 10 para el carrusel
+      porcentajeDescuento: { $gt: 0 }
+    }).limit(10);
     
     res.json(juegosConDescuento);
   } catch (err) {
@@ -134,7 +127,6 @@ app.get("/api/juegos/descuentos", async (req, res) => {
   }
 });
 
-//Obtener solo juegos en la biblioteca (con valoración)
 app.get("/api/juegos/biblioteca", async (req, res) => {
   try {
     const juegosBiblioteca = await Juego.find({ 
@@ -147,7 +139,6 @@ app.get("/api/juegos/biblioteca", async (req, res) => {
   }
 });
 
-//Obtener un juego por ID
 app.get("/api/juegos/:id", async (req, res) => {
   try {
     const juego = await Juego.findById(req.params.id);
@@ -160,7 +151,6 @@ app.get("/api/juegos/:id", async (req, res) => {
   }
 });
 
-//Crear un nuevo juego
 app.post("/api/juegos", async (req, res) => {
   try {
     const nuevoJuego = new Juego(req.body);
@@ -171,7 +161,6 @@ app.post("/api/juegos", async (req, res) => {
   }
 });
 
-// Actualizar un juego
 app.put("/api/juegos/:id", async (req, res) => {
   try {
     const actualizado = await Juego.findByIdAndUpdate(
@@ -190,7 +179,6 @@ app.put("/api/juegos/:id", async (req, res) => {
   }
 });
 
-//Eliminar un juego
 app.delete("/api/juegos/:id", async (req, res) => {
   try {
     const eliminado = await Juego.findByIdAndDelete(req.params.id);
@@ -205,10 +193,14 @@ app.delete("/api/juegos/:id", async (req, res) => {
   }
 });
 
-// AGREGAR/ACTUALIZAR VALORACIÓN DE UN JUEGO
 app.post("/api/juegos/:id/valorar", async (req, res) => {
   try {
     const { estrellas, horasJugadas, completado, reseña } = req.body;
+    
+    let estadoCompletado = false;
+    if (completado === 'si' || completado === true || completado === 'true') {
+      estadoCompletado = true;
+    }
     
     const juegoActualizado = await Juego.findByIdAndUpdate(
       req.params.id,
@@ -216,7 +208,7 @@ app.post("/api/juegos/:id/valorar", async (req, res) => {
         $set: {
           'valoracionUsuario.estrellas': estrellas || 0,
           'valoracionUsuario.horasJugadas': horasJugadas || 0,
-          'valoracionUsuario.completado': completado === 'si' || completado === true,
+          'valoracionUsuario.completado': estadoCompletado, 
           'valoracionUsuario.reseña': reseña || '',
           'valoracionUsuario.fechaValoracion': new Date()
         }
@@ -234,7 +226,7 @@ app.post("/api/juegos/:id/valorar", async (req, res) => {
   }
 });
 
-// ELIMINAR VALORACIÓN (quitar de biblioteca)
+// ELIMINAR VALORACIÓN
 app.delete("/api/juegos/:id/valorar", async (req, res) => {
   try {
     const juegoActualizado = await Juego.findByIdAndUpdate(

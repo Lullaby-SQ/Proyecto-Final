@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/NavBar';
+import FormularioValoracion from '../components/FormularioValoracion';
 import '../styles/biblioteca.css';
 import '../styles/global.css';
 
@@ -8,12 +9,11 @@ function Biblioteca() {
   const navigate = useNavigate();
   const [modalAbierto, setModalAbierto] = useState(false);
   const [juegoSeleccionado, setJuegoSeleccionado] = useState(null);
-  const [valorEstrellas, setValorEstrellas] = useState(0);
   const [juegos, setJuegos] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [filtro, setFiltro] = useState('todos');
 
-  //Obtener juegos de la biblioteca
+  // Obtener juegos de la biblioteca
   useEffect(() => {
     obtenerBiblioteca();
   }, []);
@@ -34,60 +34,30 @@ function Biblioteca() {
     }
   };
 
-  //Filtrar juegos según el estado
   const juegosFiltrados = juegos.filter(juego => {
     if (filtro === 'todos') return true;
-    if (filtro === 'completos') return juego.valoracionUsuario?.completo === true;
-    if (filtro === 'incompletos') return juego.valoracionUsuario?.completo === false;
+    if (filtro === 'completos') return juego.valoracionUsuario?.completado === true;
+    if (filtro === 'incompletos') return juego.valoracionUsuario?.completado === false;
     return true;
   });
 
   const abrirModal = (juego) => {
     setJuegoSeleccionado(juego);
-    setValorEstrellas(juego.valoracionUsuario?.estrellas || 0);
     setModalAbierto(true);
+    document.body.style.overflow = 'hidden';
   };
 
   const cerrarModal = () => {
     setModalAbierto(false);
     setJuegoSeleccionado(null);
-    setValorEstrellas(0);
+    document.body.style.overflow = 'auto';
   };
 
-  const handleEstrellaClick = (valor) => {
-    setValorEstrellas(valor);
+  const handleGuardarValoracion = async () => {
+    await obtenerBiblioteca(); // Recargar biblioteca
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    
-    const datos = {
-      estrellas: valorEstrellas,
-      horasJugadas: parseFloat(formData.get('horas')) || 0,
-      completo: formData.get('completo'),
-      reseña: formData.get('reseña')
-    };
-    
-    try {
-      const response = await fetch(`http://localhost:3001/api/juegos/${juegoSeleccionado._id}/valorar`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(datos)
-      });
-
-      if (!response.ok) throw new Error('Error al actualizar valoración');
-
-      alert('¡Valoración actualizada correctamente!');
-      await obtenerBiblioteca(); // Recargamos la biblioteca
-      cerrarModal();
-    } catch (error) {
-      console.error('Error:', error);
-      alert('Error al guardar los cambios');
-    }
-  };
-
-  //Eliminar juego de la biblioteca
+  // Eliminar juego de la biblioteca
   const eliminarDeBiblioteca = async (juegoId) => {
     if (!window.confirm('¿Eliminar este juego de tu biblioteca?')) return;
     
@@ -129,9 +99,13 @@ function Biblioteca() {
       <div className="container-subtitle-biblioteca">
         <h3 className="subtitle-biblioteca">Todos tus juegos:</h3>
         <select value={filtro} onChange={(e) => setFiltro(e.target.value)}>
-          <option value="todos">Todos</option>
-          <option value="completos">Completos</option>
-          <option value="incompletos">Incompletos</option>
+          <option value="todos">Todos ({juegos.length})</option>
+          <option value="completos">
+            Completos ({juegos.filter(j => j.valoracionUsuario?.completado === true).length})
+          </option>
+          <option value="incompletos">
+            Incompletos ({juegos.filter(j => j.valoracionUsuario?.completado === false).length})
+          </option>
         </select>
       </div>
 
@@ -165,8 +139,9 @@ function Biblioteca() {
                   alt={juego.nombre}
                   onError={(e) => e.target.src = '/Front-end/images/placeholder.jpg'}
                 />
-                <div className="estado">
-                  {juego.valoracionUsuario?.completo ? 'Completo' : 'Incompleto'}
+               
+                <div className={`estado ${juego.valoracionUsuario?.completado ? 'completado' : 'incompleto'}`}>
+                  {juego.valoracionUsuario?.completado ? '✓ Completo' : '⏳ Incompleto'}
                 </div>
               </div>
               <div className="card-content-biblioteca">
@@ -181,107 +156,57 @@ function Biblioteca() {
           ))
         )}
 
-        <div className="card-biblioteca" onClick={() => navigate('/explora')} style={{ cursor: 'pointer' }}>
+        <div 
+          className="card-biblioteca card-agregar" 
+          onClick={() => navigate('/explora')} 
+          style={{ cursor: 'pointer' }}
+        >
           <div className="card-content-biblioteca">
-            <h2 className="card-title">Explora Nuevos juegos</h2>
+            <h2 className="card-title">+ Explora Nuevos Juegos</h2>
           </div>
         </div>
       </div>
 
       {modalAbierto && juegoSeleccionado && (
-        <div className="overlay-biblioteca" style={{ display: 'flex', opacity: '1' }}>
-          <div className="popup">
-            <button className="btn-cerrar" onClick={cerrarModal}>✕</button>
-
-            <div className="div-popup">
-              <div className="section-valoracion">
-                <h2 className="title-valoracion">{juegoSeleccionado.nombre}</h2>
-                <div className="img-valoracion">
-                  <img 
-                    src={juegoSeleccionado.portada || '/Front-end/images/placeholder.jpg'} 
-                    alt={juegoSeleccionado.nombre}
-                    onError={(e) => e.target.src = '/Front-end/images/placeholder.jpg'}
-                  />
-                </div>
-              </div>
-
-              <div className="section-valoracion">
-                <h3>Descripción:</h3>
-                <p>{juegoSeleccionado.descripcion || 'Sin descripción'}</p>
-
-                <div className="categorias">
-                  <h3>Categorías:</h3>
-                  <ul>
-                    {juegoSeleccionado.categorias?.map((cat, index) => (
-                      <li key={index}>{cat}</li>
-                    )) || <li>Sin categoría</li>}
-                  </ul>
-                </div>
-
-                <form className="form-valoracion" onSubmit={handleSubmit}>
-                  <h2>Editar Valoración</h2>
-
-                  <div className="valoracion-estrellas">
-                    <h3>Valoración:</h3>
-                    <div className="estrellas">
-                      {[1, 2, 3, 4, 5].map((valor) => (
-                        <span
-                          key={valor}
-                          className={`estrella ${valorEstrellas >= valor ? 'active' : ''}`}
-                          onClick={() => handleEstrellaClick(valor)}
-                        >
-                          ★
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  <label htmlFor="horas">Horas jugadas:</label>
-                  <input 
-                    type="number" 
-                    id="horas" 
-                    name="horas" 
-                    min="0" 
-                    placeholder="Ingresa horas jugadas"
-                    defaultValue={juegoSeleccionado.valoracionUsuario?.horasJugadas || 0}
-                  />
-
-                  <label htmlFor="completo">¿Completaste el juego?</label>
-                  <select 
-                    id="completo" 
-                    name="completo"
-                    defaultValue={juegoSeleccionado.valoracionUsuario?.completo ? 'si' : 'no'}
-                  >
-                    <option value="si">Sí, lo completé</option>
-                    <option value="no">No, todavía no</option>
-                  </select>
-
-                  <label htmlFor="reseña">Reseña:</label>
-                  <textarea 
-                    id="reseña" 
-                    name="reseña" 
-                    rows="4"
-                    placeholder="Escribe aquí tu opinión sobre el juego..."
-                    defaultValue={juegoSeleccionado.valoracionUsuario?.reseña || ''}
-                  />
-
-                  <button type="submit" className="btn-enviar">Actualizar Valoración</button>
-                  <button 
-                    type="button" 
-                    className="btn-eliminar"
-                    onClick={() => eliminarDeBiblioteca(juegoSeleccionado._id)}
-                    style={{
-                      background: 'linear-gradient(135deg, #e74c3c, #c0392b)',
-                      marginTop: '10px',
-                      width: '100%'
-                    }}
-                  >
-                    Eliminar de Biblioteca
-                  </button>
-                </form>
-              </div>
-            </div>
-          </div>
+        <div style={{ position: 'relative' }}>
+          <FormularioValoracion 
+            juegoSeleccionado={juegoSeleccionado}
+            onCerrar={cerrarModal}
+            onGuardar={handleGuardarValoracion}
+          />
+          
+          {/* Botón de eliminar (se superpone al formulario) */}
+          <button 
+            className="btn-eliminar-biblioteca"
+            onClick={() => eliminarDeBiblioteca(juegoSeleccionado._id)}
+            style={{
+              position: 'fixed',
+              bottom: '30px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              zIndex: 2001,
+              background: 'linear-gradient(135deg, #e74c3c, #c0392b)',
+              border: 'none',
+              color: 'white',
+              padding: '12px 30px',
+              borderRadius: '12px',
+              fontSize: '1em',
+              fontWeight: '600',
+              cursor: 'pointer',
+              boxShadow: '0 5px 20px rgba(231, 76, 60, 0.5)',
+              transition: 'all 0.3s ease'
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.transform = 'translateX(-50%) scale(1.05)';
+              e.target.style.boxShadow = '0 8px 30px rgba(231, 76, 60, 0.7)';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.transform = 'translateX(-50%) scale(1)';
+              e.target.style.boxShadow = '0 5px 20px rgba(231, 76, 60, 0.5)';
+            }}
+          >
+            Eliminar de Biblioteca
+          </button>
         </div>
       )}
     </>

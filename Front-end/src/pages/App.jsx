@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/NavBar';
+import FormularioValoracion from '../components/FormularioValoracion';
 import '../styles/carrusel.css';
 import '../styles/global.css';
 
@@ -11,7 +12,6 @@ function Index() {
   const [cargando, setCargando] = useState(true);
   const [modalAbierto, setModalAbierto] = useState(false);
   const [juegoSeleccionado, setJuegoSeleccionado] = useState(null);
-  const [valorEstrellas, setValorEstrellas] = useState(0);
 
   // Obtener juegos con descuento desde la API
   useEffect(() => {
@@ -22,7 +22,6 @@ function Index() {
 
         const data = await res.json();
 
-        // Si hay juegos con descuento, los usamos
         if (data.length > 0) {
           const adaptados = data.map(j => ({
             id: j._id,
@@ -32,17 +31,20 @@ function Index() {
             categorias: j.categorias || ["Sin categoría"],
             descuento: `-${j.porcentajeDescuento}%`,
             precioOriginal: `${j.precio.toFixed(2)}`,
-            precioActual: `${(j.precio * (1 - j.porcentajeDescuento / 100)).toFixed(2)}`
+            precioActual: `${(j.precio * (1 - j.porcentajeDescuento / 100)).toFixed(2)}`,
+            // ✅ Añadimos los datos completos para el formulario
+            _id: j._id,
+            nombre: j.nombre,
+            portada: j.portada,
+            precio: j.precio,
+            tieneDescuento: j.tieneDescuento,
+            porcentajeDescuento: j.porcentajeDescuento,
+            valoracionUsuario: j.valoracionUsuario
           }));
           setJuegosDescuento(adaptados);
-        } else {
-          // Si no hay juegos con descuento, mostramos ejemplos por defecto
-          setJuegosDescuento(juegosEjemplo);
         }
       } catch (error) {
         console.error("Error:", error);
-        // En caso de error, mostramos juegos de ejemplo
-        setJuegosDescuento(juegosEjemplo);
       } finally {
         setCargando(false);
       }
@@ -50,7 +52,6 @@ function Index() {
 
     obtenerJuegosConDescuento();
   }, []);
-
 
   useEffect(() => {
     if (juegosDescuento.length > 0) {
@@ -100,54 +101,21 @@ function Index() {
     setCurrent((current - 1 + juegosDescuento.length) % juegosDescuento.length);
   };
 
-  // Funciones para el modal de valoración
+  // Modal
   const abrirModal = (juego) => {
     setJuegoSeleccionado(juego);
     setModalAbierto(true);
-    setValorEstrellas(0);
-    document.body.style.overflow = 'hidden'; // Bloquear scroll del body
+    document.body.style.overflow = 'hidden';
   };
 
   const cerrarModal = () => {
     setModalAbierto(false);
     setJuegoSeleccionado(null);
-    setValorEstrellas(0);
-    document.body.style.overflow = 'auto'; // Restaurar scroll
+    document.body.style.overflow = 'auto';
   };
 
-  const handleEstrellaClick = (valor) => {
-    setValorEstrellas(valor);
-  };
-
-  const handleSubmitValoracion = async (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-
-    const datos = {
-      estrellas: valorEstrellas,
-      horasJugadas: parseFloat(formData.get('horas')) || 0,
-      completo: formData.get('completo'),
-      reseña: formData.get('reseña')
-    };
-
-    try {
-      const response = await fetch(`http://localhost:3001/api/juegos/${juegoSeleccionado.id}/valorar`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(datos)
-      });
-
-      if (!response.ok) throw new Error('Error al guardar valoración');
-
-      const resultado = await response.json();
-      console.log('Valoración guardada:', resultado);
-
-      alert(`¡Valoración de "${juegoSeleccionado.titulo}" guardada en tu biblioteca!`);
-      cerrarModal();
-    } catch (error) {
-      console.error('Error:', error);
-      alert('Error al guardar la valoración. Por favor intenta de nuevo.');
-    }
+  const handleGuardarValoracion = () => {
+    // Opcional: recargar juegos
   };
 
   return (
@@ -189,8 +157,8 @@ function Index() {
                       <div className="card-content">
                         <h2 className="card-title">{juego.titulo}</h2>
                         <div className="price-container">
-                          <span className="original-price">{juego.precioOriginal}</span>
-                          <span className="current-price">{juego.precioActual}</span>
+                          <span className="original-price">${juego.precioOriginal}</span>
+                          <span className="current-price">${juego.precioActual}</span>
                         </div>
                       </div>
                     </div>
@@ -245,97 +213,12 @@ function Index() {
         </div>
       </footer>
 
-      {/* 🎮 MODAL DE VALORACIÓN */}
       {modalAbierto && juegoSeleccionado && (
-        <div className="overlay-valoracion" style={{ display: 'flex', opacity: '1' }}>
-          <div className="popup-valoracion">
-            <button className="btn-cerrar" onClick={cerrarModal}>✕</button>
-
-            <div className="div-popup">
-              {/* LADO IZQUIERDO (imagen y nombre) */}
-              <div className="section-valoracion">
-                <h2 className="title-valoracion">{juegoSeleccionado.titulo}</h2>
-                <div className="img-valoracion">
-                  <img
-                    src={juegoSeleccionado.imagen}
-                    alt={juegoSeleccionado.titulo}
-                    onError={(e) => e.target.src = '/Front-end/images/placeholder.jpg'}
-                  />
-                </div>
-                <div className="precio-modal">
-                  <span className="precio-original-modal">{juegoSeleccionado.precioOriginal}</span>
-                  <span className="precio-actual-modal">{juegoSeleccionado.precioActual}</span>
-                  <span className="descuento-badge-modal">{juegoSeleccionado.descuento}</span>
-                </div>
-              </div>
-
-              {/* LADO DERECHO (descripción y formulario) */}
-              <div className="section-valoracion">
-                <h3>Descripción:</h3>
-                <p>{juegoSeleccionado.descripcion}</p>
-
-                {/* Categorías del juego */}
-                <div className="categorias">
-                  <h3>Categorías:</h3>
-                  <ul>
-                    {juegoSeleccionado.categorias?.map((cat, index) => (
-                      <li key={index}>{cat}</li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Formulario de valoración */}
-                <form className="form-valoracion" onSubmit={handleSubmitValoracion}>
-                  <h2>Tu Valoración</h2>
-
-                  {/* Valoración en estrellas */}
-                  <div className="valoracion-estrellas">
-                    <h3>Calificación:</h3>
-                    <div className="estrellas">
-                      {[1, 2, 3, 4, 5].map((valor) => (
-                        <span
-                          key={valor}
-                          className={`estrella ${valorEstrellas >= valor ? 'active' : ''}`}
-                          onClick={() => handleEstrellaClick(valor)}
-                        >
-                          ★
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  <label htmlFor="horas-index">Horas jugadas:</label>
-                  <input
-                    type="number"
-                    id="horas-index"
-                    name="horas"
-                    min="0"
-                    placeholder="Ingresa horas jugadas"
-                    required
-                  />
-
-                  <label htmlFor="completo-index">¿Completaste el juego?</label>
-                  <select id="completo-index" name="completo" required>
-                    <option value="" disabled selected>Selecciona una opción</option>
-                    <option value="si">Sí, lo completé</option>
-                    <option value="no">No, todavía no</option>
-                  </select>
-
-                  <label htmlFor="reseña-index">Reseña:</label>
-                  <textarea
-                    id="reseña-index"
-                    name="reseña"
-                    rows="4"
-                    placeholder="Escribe aquí tu opinión sobre el juego..."
-                    required
-                  />
-
-                  <button type="submit" className="btn-enviar">Guardar Valoración</button>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
+        <FormularioValoracion 
+          juegoSeleccionado={juegoSeleccionado}
+          onCerrar={cerrarModal}
+          onGuardar={handleGuardarValoracion}
+        />
       )}
     </>
   );
