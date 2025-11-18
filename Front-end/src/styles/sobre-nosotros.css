@@ -1,0 +1,109 @@
+.container-sobre-nosotros {
+    display: flex;
+    flex-direction: column;
+    width: 1100px;
+    padding: 30px;
+    margin: 50px auto;
+    margin-top: 0;
+    border-radius: 10px;
+    border: 1px solid rgb(0, 2, 139);
+    background-color: #16213e;
+    gap: 35px;
+}
+
+/* ----- TITULO PRINCIPAL ----- */
+.title-sobre-nosotros {
+    padding: 20px;
+    margin-top: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #0a0e27;
+    border: 1px solid #0b22b8;
+    font-size: 30px;
+    margin-left: 35px;
+    margin-bottom: 0px;
+    border-radius: 10px;
+    width: 90%;
+}
+
+/* ----- SUBTITULOS ----- */
+.subtitle-sobre-nosotros {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #9fb4ff;
+    text-shadow: 0 0 6px #1b37ff;
+}
+
+/* ----- SECCIÓN EQUIPO ----- */
+.sobre-nosotros-equipo {
+    width: 100%;
+}
+
+.equipo-cards {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.equipo-card {
+    background-color: #0e1730;
+    padding: 20px;
+    width: 300px;
+    border-radius: 10px;
+    border: 1px solid #1a32d2;
+    box-shadow: 0 0 10px #0b1d6b;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.equipo-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 15px #3f5dff;
+}
+
+.equipo-nombre {
+    font-size: 22px;
+    color: #dbe5ff;
+}
+
+.equipo-rol {
+    font-size: 16px;
+    color: #8ea4ff;
+    margin-bottom: 10px;
+}
+
+.equipo-desc {
+    font-size: 14px;
+    color: #b9c6ff;
+}
+
+/* ----- SECCIÓN POR QUÉ LO HICIMOS ----- */
+.sobre-nosotros-tarea {
+    width: 100%;
+}
+
+.sobre-nosotros-texto {
+    background-color: #0e1730;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #1a32d2;
+    color: #dbe5ff;
+    line-height: 1.6;
+    box-shadow: 0 0 10px #0b1d6b;
+    width: 95%;
+}
+
+/* ----- RESPONSIVE ----- */
+@media (max-width: 900px) {
+    .container-sobre-nosotros {
+        width: 95%;
+    }
+
+    .equipo-cards {
+        justify-content: center;
+    }
+
+    .equipo-card {
+        width: 90%;
+    }
+}
