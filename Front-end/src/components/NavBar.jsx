@@ -13,10 +13,10 @@ function Navbar() {
           </a>
         </h1>
         <ul>
-          <li><a href="/sobre-nosotros" onClick={(e) => { e.preventDefault(); navigate('/sobre-nosotros'); }}>Sobre Nosotros</a></li>
-          <li><a href="/biblioteca" onClick={(e) => { e.preventDefault(); navigate('/biblioteca'); }}>Biblioteca</a></li>
-          <li><a href="/estadisticas" onClick={(e) => { e.preventDefault(); navigate('/estadisticas'); }}>Estadísticas</a></li>
-          <li><a href="/usuario" onClick={(e) => { e.preventDefault(); navigate('/usuario'); }}>Usuario</a></li>
+          <li><a href="/Sobre-nosotros" onClick={(e) => { e.preventDefault(); navigate('/Sobre-nosotros'); }}>Sobre Nosotros</a></li>
+          <li><a href="/biblioteca" onClick={(e) => { e.preventDefault(); navigate('/explora'); }}>Agrega Juegos</a></li>
+          <li><a href="/estadisticas" onClick={(e) => { e.preventDefault(); navigate('/biblioteca'); }}>Estadísticas</a></li>
+          <li><a href="/usuario" onClick={(e) => { e.preventDefault(); navigate('/exploracion'); }}>Juegos</a></li>
         </ul>
       </div>
     </nav>

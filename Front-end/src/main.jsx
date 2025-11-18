@@ -7,6 +7,8 @@ import './styles/global.css';
 import App from './pages/App.jsx';
 import Biblioteca from './pages/biblioteca.jsx';
 import Explora from './pages/explora.jsx';
+import Exploracion from './pages/Exploracion.jsx';
+import Sobrenosotros from './pages/sobre-nosotros.jsx';
 
 const router = createBrowserRouter([
   { 
@@ -21,22 +23,13 @@ const router = createBrowserRouter([
     path: '/explora',
     element: <Explora />
   },
-  // Rutas adicionales para futuro
   { 
-    path: '/estadisticas', 
-    element: <div style={{color: 'white', padding: '2rem'}}>Estadísticas - En desarrollo</div> 
-  },
-  { 
-    path: '/usuario', 
-    element: <div style={{color: 'white', padding: '2rem'}}>Usuario - En desarrollo</div> 
+    path: '/exploracion',
+    element: <Exploracion /> 
   },
   { 
     path: '/sobre-nosotros', 
-    element: <div style={{color: 'white', padding: '2rem'}}>Sobre Nosotros - En desarrollo</div> 
-  },
-  { 
-    path: '/registro', 
-    element: <div style={{color: 'white', padding: '2rem'}}>Registro - En desarrollo</div> 
+    element: <Sobrenosotros /> 
   }
 ]);
 

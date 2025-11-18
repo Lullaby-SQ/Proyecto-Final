@@ -37,8 +37,8 @@ function Biblioteca() {
   //Filtrar juegos según el estado
   const juegosFiltrados = juegos.filter(juego => {
     if (filtro === 'todos') return true;
-    if (filtro === 'completados') return juego.valoracionUsuario?.completado === true;
-    if (filtro === 'incompletos') return juego.valoracionUsuario?.completado === false;
+    if (filtro === 'completos') return juego.valoracionUsuario?.completo === true;
+    if (filtro === 'incompletos') return juego.valoracionUsuario?.completo === false;
     return true;
   });
 
@@ -65,7 +65,7 @@ function Biblioteca() {
     const datos = {
       estrellas: valorEstrellas,
       horasJugadas: parseFloat(formData.get('horas')) || 0,
-      completado: formData.get('completado'),
+      completo: formData.get('completo'),
       reseña: formData.get('reseña')
     };
     
@@ -123,14 +123,14 @@ function Biblioteca() {
       <Navbar />
       
       <div className="container-title-biblioteca">
-        <h2 className="title-biblioteca">Mi Biblioteca</h2>
+        <h2 className="title-biblioteca">Mis Juegos</h2>
       </div>
 
       <div className="container-subtitle-biblioteca">
         <h3 className="subtitle-biblioteca">Todos tus juegos:</h3>
         <select value={filtro} onChange={(e) => setFiltro(e.target.value)}>
           <option value="todos">Todos</option>
-          <option value="completados">Completados</option>
+          <option value="completos">Completos</option>
           <option value="incompletos">Incompletos</option>
         </select>
       </div>
@@ -166,7 +166,7 @@ function Biblioteca() {
                   onError={(e) => e.target.src = '/Front-end/images/placeholder.jpg'}
                 />
                 <div className="estado">
-                  {juego.valoracionUsuario?.completado ? 'Completado' : 'Incompleto'}
+                  {juego.valoracionUsuario?.completo ? 'Completo' : 'Incompleto'}
                 </div>
               </div>
               <div className="card-content-biblioteca">
@@ -246,11 +246,11 @@ function Biblioteca() {
                     defaultValue={juegoSeleccionado.valoracionUsuario?.horasJugadas || 0}
                   />
 
-                  <label htmlFor="completado">¿Completaste el juego?</label>
+                  <label htmlFor="completo">¿Completaste el juego?</label>
                   <select 
-                    id="completado" 
-                    name="completado"
-                    defaultValue={juegoSeleccionado.valoracionUsuario?.completado ? 'si' : 'no'}
+                    id="completo" 
+                    name="completo"
+                    defaultValue={juegoSeleccionado.valoracionUsuario?.completo ? 'si' : 'no'}
                   >
                     <option value="si">Sí, lo completé</option>
                     <option value="no">No, todavía no</option>

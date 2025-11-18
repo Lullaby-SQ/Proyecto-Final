@@ -19,9 +19,9 @@ function Index() {
       try {
         const res = await fetch("http://localhost:3001/api/juegos/descuentos");
         if (!res.ok) throw new Error("Error al cargar juegos");
-        
+
         const data = await res.json();
-        
+
         // Si hay juegos con descuento, los usamos
         if (data.length > 0) {
           const adaptados = data.map(j => ({
@@ -122,14 +122,14 @@ function Index() {
   const handleSubmitValoracion = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
-    
+
     const datos = {
       estrellas: valorEstrellas,
       horasJugadas: parseFloat(formData.get('horas')) || 0,
-      completado: formData.get('completado'),
+      completo: formData.get('completo'),
       reseña: formData.get('reseña')
     };
-    
+
     try {
       const response = await fetch(`http://localhost:3001/api/juegos/${juegoSeleccionado.id}/valorar`, {
         method: 'POST',
@@ -141,7 +141,7 @@ function Index() {
 
       const resultado = await response.json();
       console.log('Valoración guardada:', resultado);
-      
+
       alert(`¡Valoración de "${juegoSeleccionado.titulo}" guardada en tu biblioteca!`);
       cerrarModal();
     } catch (error) {
@@ -162,25 +162,25 @@ function Index() {
         <div className="div-width-carrusel">
           <div className="carousel-container">
             <h1>
-              {cargando ? "Cargando ofertas..." : 
-               juegosDescuento.length > 0 ? "Ofertas Especiales" : "Agrega juegos con descuento"}
+              {cargando ? "Cargando ofertas..." :
+                juegosDescuento.length > 0 ? "Ofertas Especiales" : "Agrega juegos con descuento"}
             </h1>
-            
+
             {!cargando && juegosDescuento.length > 0 && (
               <>
                 <button className="btn prev" onClick={prevSlide}>&#10094;</button>
-                
+
                 <div className="carousel" id="carousel">
                   {juegosDescuento.map((juego) => (
-                    <div 
-                      className="card" 
+                    <div
+                      className="card"
                       key={juego.id}
                       onClick={() => abrirModal(juego)}
                       style={{ cursor: 'pointer' }}
                     >
                       <div className="card-image">
-                        <img 
-                          src={juego.imagen} 
+                        <img
+                          src={juego.imagen}
                           alt={juego.titulo}
                           onError={(e) => e.target.src = '/Front-end/images/placeholder.jpg'}
                         />
@@ -196,7 +196,7 @@ function Index() {
                     </div>
                   ))}
                 </div>
-                
+
                 <button className="btn next" onClick={nextSlide}>&#10095;</button>
               </>
             )}
@@ -208,7 +208,7 @@ function Index() {
         <section className="feature-card">
           <h2>Explora nuestra biblioteca de juegos</h2>
           <p>Descubre nuevos títulos y guarda tus favoritos en tu colección personal.</p>
-          <button className="feature-btn" onClick={() => navigate('/biblioteca')}>
+          <button className="feature-btn" onClick={() => navigate('/Exploracion')}>
             Ver Biblioteca
           </button>
         </section>
@@ -216,17 +216,10 @@ function Index() {
         <section className="feature-card">
           <h2>Estadísticas de juego</h2>
           <p>Mantente al tanto de tu progreso y logros en los juegos que amas.</p>
-          <button className="feature-btn" onClick={() => navigate('/estadisticas')}>
+          <button className="feature-btn" onClick={() => navigate('/biblioteca')}>
             Ver Estadísticas
           </button>
         </section>
-      </div>
-
-      <div className="cta-section">
-        <h2>¿Aún no tienes un usuario?</h2>
-        <button className="cta-btn" onClick={() => navigate('/registro')}>
-          ¡Crea uno!
-        </button>
       </div>
 
       <footer>
@@ -263,8 +256,8 @@ function Index() {
               <div className="section-valoracion">
                 <h2 className="title-valoracion">{juegoSeleccionado.titulo}</h2>
                 <div className="img-valoracion">
-                  <img 
-                    src={juegoSeleccionado.imagen} 
+                  <img
+                    src={juegoSeleccionado.imagen}
                     alt={juegoSeleccionado.titulo}
                     onError={(e) => e.target.src = '/Front-end/images/placeholder.jpg'}
                   />
@@ -312,26 +305,26 @@ function Index() {
                   </div>
 
                   <label htmlFor="horas-index">Horas jugadas:</label>
-                  <input 
-                    type="number" 
-                    id="horas-index" 
-                    name="horas" 
-                    min="0" 
+                  <input
+                    type="number"
+                    id="horas-index"
+                    name="horas"
+                    min="0"
                     placeholder="Ingresa horas jugadas"
                     required
                   />
 
-                  <label htmlFor="completado-index">¿Completaste el juego?</label>
-                  <select id="completado-index" name="completado" required>
+                  <label htmlFor="completo-index">¿Completaste el juego?</label>
+                  <select id="completo-index" name="completo" required>
                     <option value="" disabled selected>Selecciona una opción</option>
                     <option value="si">Sí, lo completé</option>
                     <option value="no">No, todavía no</option>
                   </select>
 
                   <label htmlFor="reseña-index">Reseña:</label>
-                  <textarea 
-                    id="reseña-index" 
-                    name="reseña" 
+                  <textarea
+                    id="reseña-index"
+                    name="reseña"
                     rows="4"
                     placeholder="Escribe aquí tu opinión sobre el juego..."
                     required
