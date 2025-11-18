@@ -67,7 +67,7 @@ function Explora() {
   };
 
   //Abrir / Cerrar modales
-  const abrirModalDetalles = (juego) => {
+  const abrirModalDetalles = (juego) => { // Al hacer click en una tarjeta de juego, se abre el modal de detalles de ese juego
     setJuegoSeleccionado(juego);
     setModalDetalles(true);
   };
@@ -89,12 +89,12 @@ function Explora() {
   };
 
   //Manejo de formularios
-  const manejarCambio = (e) => {
+  const manejarCambio = (e) => { // Maneja cambios en inputs de texto y números
     const { name, value } = e.target;
     setNuevoJuego(prev => ({ ...prev, [name]: value }));
   };
 
-  const manejarCategorias = (e) => {
+  const manejarCategorias = (e) => { // Maneja selección de categorías 
     const valor = e.target.value;
     setNuevoJuego(prev => ({
       ...prev,
@@ -105,15 +105,15 @@ function Explora() {
   };
 
   // Manejo de imágenes con selector de archivos
-  const manejarImagen = (e) => {
+  const manejarImagen = (e) => { 
     const file = e.target.files[0];
     if (file) {
       // Convertir imagen a Base64 para guardar en MongoDB
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setNuevoJuego(prev => ({ ...prev, imagen: reader.result }));
+      const reader = new FileReader(); // Crear un lector de archivos
+      reader.onloadend = () => { 
+        setNuevoJuego(prev => ({ ...prev, imagen: reader.result })); // Guarda la imagen en Base64
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(file); // Lee el archivo como Data URL (Base64)
     }
   };
 
@@ -222,22 +222,22 @@ function Explora() {
       <Navbar />
       <div className="explora-page">
         {/* Filtro de categorías */}
-        <div className="filtros">
+        <div className="filtros"> {/* Cambia el valor del select al cambiar la opción*/}
           <select value={filtroCategoria} onChange={(e) => setFiltroCategoria(e.target.value)}>
             <option value="Todos">Todos</option>
             {categorias.map((c, i) => (
-              <option key={i} value={c}>{c}</option>
+              <option key={i} value={c}>{c}</option> // Valor igual al nombre
             ))}
           </select>
         </div>
 
         {/* Lista de juegos */}
         <div className="juegos-lista">
-          {filtrarJuegos().length === 0 ? (
+          {filtrarJuegos().length === 0 ? ( // en caso de no recibir ningun juego en la categoría seleccionada
             <p style={{ textAlign: 'center', gridColumn: '1/-1' }}>
               No hay juegos en esta categoría
             </p>
-          ) : (
+          ) : ( // Recorre los juegos y crea una tarjeta por cada uno con sus datos
             filtrarJuegos().map((juego) => (
               <div
                 key={juego.id}
@@ -259,7 +259,7 @@ function Explora() {
         {/* Botón "+" para agregar */}
         <button
           className="btn-agregar"
-          onClick={(e) => {
+          onClick={(e) => { // al hacer click en el botón, se abre el modal de agregar
             e.stopPropagation();
             setModalAgregar(true);
           }}
@@ -268,11 +268,11 @@ function Explora() {
         </button>
 
         {/* Modal Agregar */}
-        {modalAgregar && (
-          <div className="modal-overlay" onClick={() => setModalAgregar(false)}>
-            <div className="modal" onClick={(e) => e.stopPropagation()}>
-              <h2>Agregar Juego</h2>
-              <form onSubmit={agregarJuego}>
+        {modalAgregar && ( // Si el estado de modalAgregar es true, se muestra el modal
+          <div className="modal-overlay" onClick={() => setModalAgregar(false)}> {/* Cerrar modal al hacer click fuera */}
+            <div className="modal" onClick={(e) => e.stopPropagation()}> {/* Evitar cierre al hacer click dentro del modal */}
+              <h2>Agregar Juego</h2> 
+              <form onSubmit={agregarJuego}> {/* Formulario para agregar un nuevo juego, al hacer click en el boton agregar */}
                 <input
                   type="text"
                   name="titulo"
@@ -280,22 +280,22 @@ function Explora() {
                   value={nuevoJuego.titulo}
                   onChange={manejarCambio}
                   required
-                />
+                /> {/* Input para el título del juego - obligatorio */}
 
                 <div className="input-imagen">
                   <label htmlFor="imagen-agregar">Imagen del juego</label>
                   <input
                     type="file"
                     id="imagen-agregar"
-                    accept="image/*"
-                    onChange={manejarImagen}
+                    accept="image/*" // Acepta solo archivos de imagen
+                    onChange={manejarImagen} // Al cambiar el archivo, se maneja con la función manejarImagen, la cual convierte la imagen a Base64
                   />
                   {nuevoJuego.imagen && (
                     <img 
-                      src={nuevoJuego.imagen} 
+                      src={nuevoJuego.imagen}  // Muestra la imagen seleccionada
                       alt="Previsualización" 
-                      className="preview-imagen"
-                      onError={(e) => e.target.src = '/Front-end/images/placeholder.jpg'}
+                      className="preview-imagen" 
+                      onError={(e) => e.target.src = '/Front-end/images/placeholder.jpg'} 
                     />
                   )}
                 </div>
@@ -304,7 +304,7 @@ function Explora() {
                   name="descripcion"
                   placeholder="Descripción"
                   value={nuevoJuego.descripcion}
-                  onChange={manejarCambio}
+                  onChange={manejarCambio} // Al cambiar el texto, se maneja con la función manejarCambio
                   required
                 />
 
@@ -315,10 +315,10 @@ function Explora() {
                     id="precio-agregar"
                     name="precio"
                     placeholder="0.00"
-                    value={nuevoJuego.precio}
-                    onChange={manejarCambio}
+                    value={nuevoJuego.precio} // Valor del precio
+                    onChange={manejarCambio} // Al cambiar el valor, se maneja con la función manejarCambio
                     min="0"
-                    step="0.01"
+                    step="0.01" 
                   />
                 </div>
 
@@ -332,18 +332,18 @@ function Explora() {
                         ...prev, 
                         tieneDescuento: e.target.checked,
                         porcentajeDescuento: e.target.checked ? prev.porcentajeDescuento : 0
-                      }))}
+                      }))} // Al cambiar el checkbox, actualiza el estado de tieneDescuento y resetea porcentajeDescuento si se desmarca
                     />
                     ¿Tiene descuento?
                   </label>
 
-                  {nuevoJuego.tieneDescuento && (
+                  {nuevoJuego.tieneDescuento && ( // Si tieneDescuento es true, muestra el input para el porcentaje de descuento
                     <input
                       type="number"
                       name="porcentajeDescuento"
-                      placeholder="Porcentaje de descuento (%)"
-                      value={nuevoJuego.porcentajeDescuento}
-                      onChange={manejarCambio}
+                      placeholder="Porcentaje de descuento (%)" 
+                      value={nuevoJuego.porcentajeDescuento} // Valor del porcentaje de descuento
+                      onChange={manejarCambio} 
                       min="0"
                       max="100"
                       step="1"
@@ -353,12 +353,12 @@ function Explora() {
 
                 <div className="categorias-checkbox">
                   {categorias.map(c => (
-                    <label key={c}>
+                    <label key={c}> {/* Checkbox para cada categoría */}
                       <input
                         type="checkbox"
                         value={c}
-                        checked={nuevoJuego.categorias.includes(c)}
-                        onChange={manejarCategorias}
+                        checked={nuevoJuego.categorias.includes(c)} // Marca el checkbox si la categoría está en el array
+                        onChange={manejarCategorias} 
                       />
                       {c}
                     </label>
@@ -372,33 +372,33 @@ function Explora() {
         )}
 
         {/* Modal Detalles */}
-        {modalDetalles && juegoSeleccionado && (
-          <div className="modal-overlay" onClick={cerrarModalDetalles}>
-            <div className="modal" onClick={(e) => e.stopPropagation()}>
+        {modalDetalles && juegoSeleccionado && ( // Si el estado de modalDetalles es true, se muestra el modal de detalles
+          <div className="modal-overlay" onClick={cerrarModalDetalles}> {/* Cerrar modal al hacer click fuera */}
+            <div className="modal" onClick={(e) => e.stopPropagation()}> {/* Evitar cierre al hacer click dentro del modal */}
               <img 
-                src={juegoSeleccionado.imagen} 
+                src={juegoSeleccionado.imagen} // Imagen del juego
                 alt={juegoSeleccionado.titulo}
                 onError={(e) => e.target.src = '/Front-end/images/placeholder.jpg'}
               />
               <h2>{juegoSeleccionado.titulo}</h2>
               <p>{juegoSeleccionado.descripcion}</p>
-              <p><strong>Categorías:</strong> {juegoSeleccionado.categorias.join(", ")}</p>
+              <p><strong>Categorías:</strong> {juegoSeleccionado.categorias.join(", ")}</p> {/* Muestra las categorías separadas por comas por medio del join */}
               
               <div className="precio-info">
-                {juegoSeleccionado.tieneDescuento ? (
+                {juegoSeleccionado.tieneDescuento ? ( // Si el juego tiene descuento, muestra el precio original tachado y el precio con descuento
                   <>
-                    <span className="precio-original">${juegoSeleccionado.precio.toFixed(2)}</span>
-                    <span className="precio-descuento">${(juegoSeleccionado.precio * (1 - juegoSeleccionado.porcentajeDescuento / 100)).toFixed(2)}</span>
-                    <span className="badge-descuento">-{juegoSeleccionado.porcentajeDescuento}%</span>
+                    <span className="precio-original">${juegoSeleccionado.precio.toFixed(2)}</span> {/* Precio original tachado */}
+                    <span className="precio-descuento">${(juegoSeleccionado.precio * (1 - juegoSeleccionado.porcentajeDescuento / 100)).toFixed(2)}</span> {/* Precio con descuento */}
+                    <span className="badge-descuento">-{juegoSeleccionado.porcentajeDescuento}%</span> {/* Badge con el porcentaje de descuento */}
                   </>
                 ) : (
-                  <span className="precio-normal">${juegoSeleccionado.precio.toFixed(2)}</span>
+                  <span className="precio-normal">${juegoSeleccionado.precio.toFixed(2)}</span> // Si no tiene descuento, muestra el precio normal
                 )}
               </div>
               
-              <div className="modal-buttons">
+              <div className="modal-buttons"> {/* Botones de editar y eliminar */}
                 <button onClick={() => abrirModalEditar(juegoSeleccionado)}>Editar</button>
-                <button className="btn-eliminar" onClick={() => eliminarJuego(juegoSeleccionado.id)}>Eliminar</button>
+                <button className="btn-eliminar" onClick={() => eliminarJuego(juegoSeleccionado.id)}>Eliminar</button> {/* Al hacer click, llama a la función eliminarJuego con el id del juego seleccionado ya que se le carga al mismo modal datos */}
               </div>
             </div>
           </div>
@@ -409,7 +409,7 @@ function Explora() {
           <div className="modal-overlay" onClick={cerrarModalEditar}>
             <div className="modal" onClick={(e) => e.stopPropagation()}>
               <h2>Editar Juego</h2>
-              <form onSubmit={guardarCambios}>
+              <form onSubmit={guardarCambios}> {/* Al hacer submit, llama a la función guardarCambios */}
                 <input
                   type="text"
                   name="titulo"
@@ -463,7 +463,7 @@ function Explora() {
                       type="checkbox"
                       name="tieneDescuento"
                       checked={nuevoJuego.tieneDescuento}
-                      onChange={(e) => setNuevoJuego(prev => ({ 
+                      onChange={(e) => setNuevoJuego(prev => ({  // Al cambiar el checkbox, actualiza el estado de tieneDescuento y resetea porcentajeDescuento si se desmarca
                         ...prev, 
                         tieneDescuento: e.target.checked,
                         porcentajeDescuento: e.target.checked ? prev.porcentajeDescuento : 0
@@ -472,7 +472,7 @@ function Explora() {
                     ¿Tiene descuento?
                   </label>
 
-                  {nuevoJuego.tieneDescuento && (
+                  {nuevoJuego.tieneDescuento && ( // Si tieneDescuento es true, muestra el input para el porcentaje de descuento
                     <input
                       type="number"
                       name="porcentajeDescuento"
@@ -491,8 +491,8 @@ function Explora() {
                     <label key={c}>
                       <input
                         type="checkbox"
-                        value={c}
-                        checked={nuevoJuego.categorias.includes(c)}
+                        value={c} // Valor igual al nombre de la categoría
+                        checked={nuevoJuego.categorias.includes(c)} // Marca el checkbox si la categoría está en el array
                         onChange={manejarCategorias}
                       />
                       {c}

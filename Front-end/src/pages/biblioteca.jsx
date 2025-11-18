@@ -6,12 +6,13 @@ import '../styles/biblioteca.css';
 import '../styles/global.css';
 
 function Biblioteca() {
+  // Estados y navegación
   const navigate = useNavigate();
-  const [modalAbierto, setModalAbierto] = useState(false);
-  const [juegoSeleccionado, setJuegoSeleccionado] = useState(null);
-  const [juegos, setJuegos] = useState([]);
-  const [cargando, setCargando] = useState(true);
-  const [filtro, setFiltro] = useState('todos');
+  const [modalAbierto, setModalAbierto] = useState(false); // Estado para controlar el modal
+  const [juegoSeleccionado, setJuegoSeleccionado] = useState(null); // Juego seleccionado para valorar
+  const [juegos, setJuegos] = useState([]); // Lista de juegos en la biblioteca
+  const [cargando, setCargando] = useState(true); // Estado de carga
+  const [filtro, setFiltro] = useState('todos'); // Estado para el filtro de juegos
 
   // Obtener juegos de la biblioteca
   useEffect(() => {
@@ -21,11 +22,11 @@ function Biblioteca() {
   const obtenerBiblioteca = async () => {
     setCargando(true);
     try {
-      const res = await fetch('http://localhost:3001/api/juegos/biblioteca');
+      const res = await fetch('http://localhost:3001/api/juegos/biblioteca'); // Endpoint para obtener la biblioteca del usuario, segun el back-end
       if (!res.ok) throw new Error('Error al cargar biblioteca');
       
-      const data = await res.json();
-      setJuegos(data);
+      const data = await res.json(); 
+      setJuegos(data); 
     } catch (error) {
       console.error('Error:', error);
       alert('Error al cargar la biblioteca');
