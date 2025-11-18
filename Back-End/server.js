@@ -1,36 +1,32 @@
 // ===========================
 //  IMPORTACIONES Y CONFIG
 // ===========================
-const express = require("express");
-const mongoose = require("mongoose");
-const cors = require("cors");
-require('dotenv').config();
+const express = require("express"); // Es un framework que facilita la creación de servidores en Node.js
+const mongoose = require("mongoose"); // Permite la conexión con MongoDB
+const cors = require("cors"); // Permite la comunicación entre el front-end y back-end con diferentes puertos
+require('dotenv').config(); // Carga variables de entorno desde un archivo .env, (información sensible)
 
-const app = express();
-const PORT = 3001;
+const app = express(); // Crear la aplicación Express
+const PORT = 3001; // Puerto donde correrá el servidor
 
 // Middleware
-app.use(cors());
-app.use(express.json({limit: '50mb'}));
-app.use(express.urlencoded({limit: '50mb', extended: true}));
+app.use(cors()); // Permite conexión entre frontend y backend
+app.use(express.json({limit: '50mb'})); // Permite que el backend reciba datos desde los formularios en formato json con un limite aumentado
+app.use(express.urlencoded({limit: '50mb', extended: true})); // Permite que el backend reciba datos desde los formularios en formato urlencoded con un limite aumentado
 
-// ===========================
 //  CONEXIÓN A MONGO ATLAS
-// ===========================
-const uri = process.env.MONGO_URI || 'mongodb://localhost:27017/juegosdb';
+const uri = process.env.MONGO_URI || 'mongodb://localhost:27017/juegosdb'; // Usar URI de .env o local por defecto
 
 if (!process.env.MONGO_URI) {
   console.warn('No se ha encontrado MONGO_URI en .env: se usará la URI local por defecto.');
-}
+} // En caso de que no se encuentre el .env, te envia un mensaje con consola
 
-mongoose
+mongoose 
   .connect(uri)
-  .then(() => console.log("Conectado a MongoDB"))
-  .catch((err) => console.error("Error al conectar con MongoDB:", err));
+  .then(() => console.log("Conectado a MongoDB")) // Mensaje de conexión exitosa
+  .catch((err) => console.error("Error al conectar con MongoDB:", err)); // Mensaje de error en caso de fallo
 
-// ===========================
-//  MODELO ACTUALIZADO (CORREGIDO)
-// ===========================
+//  Modelo de datos - Juego, se determinan los datos que puede tener un juego y su estructura.
 const juegoSchema = new mongoose.Schema({
   nombre: { type: String, required: true },
   descripcion: { type: String, default: "" },
@@ -83,7 +79,7 @@ const juegoSchema = new mongoose.Schema({
   timestamps: true
 });
 
-// Método virtual para calcular precio con descuento
+// Calcula el precio si el juego tiene descuento
 juegoSchema.virtual('precioFinal').get(function() {
   if (this.tieneDescuento && this.porcentajeDescuento > 0) {
     return this.precio * (1 - this.porcentajeDescuento / 100);
@@ -91,15 +87,17 @@ juegoSchema.virtual('precioFinal').get(function() {
   return this.precio;
 });
 
-// Método virtual para saber si el juego está en la biblioteca
+// Método para saber si un juego está en la biblioteca del usuario (o sea, si ha sido valorado)
 juegoSchema.virtual('enBiblioteca').get(function() {
   return this.valoracionUsuario.fechaValoracion !== null;
 });
 
 juegoSchema.set('toJSON', { virtuals: true });
 juegoSchema.set('toObject', { virtuals: true });
+//activa los campos virtuales en las respuestas JSON
 
 const Juego = mongoose.model("Juego", juegoSchema);
+//permite que podamos interactuar con la colección de juegos en la base de datos
 
 // ===========================
 //  RUTAS API
@@ -112,7 +110,7 @@ app.get("/api/juegos", async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: "Error al obtener los juegos" });
   }
-});
+}); // obtiene todos los juegos de la base de datos y los guarda en un json, en caso de error manda un mensaje 500
 
 app.get("/api/juegos/descuentos", async (req, res) => {
   try {
@@ -125,7 +123,7 @@ app.get("/api/juegos/descuentos", async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: "Error al obtener juegos con descuento" });
   }
-});
+}); //obtiene todos los juegos que tengan descuento, con un limite de hasta 10 juegos
 
 app.get("/api/juegos/biblioteca", async (req, res) => {
   try {
@@ -137,7 +135,7 @@ app.get("/api/juegos/biblioteca", async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: "Error al obtener biblioteca" });
   }
-});
+}); // obtiene todos los juegos que el usuario ha valorado (en su biblioteca)
 
 app.get("/api/juegos/:id", async (req, res) => {
   try {
@@ -149,7 +147,7 @@ app.get("/api/juegos/:id", async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: "Error al obtener el juego" });
   }
-});
+}); // obtiene un juego específico por su ID
 
 app.post("/api/juegos", async (req, res) => {
   try {
@@ -159,7 +157,7 @@ app.post("/api/juegos", async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: "Error al crear el juego", details: err.message });
   }
-});
+}); // Crea un nuevo juego con los datos enviados mediante un formulario
 
 app.put("/api/juegos/:id", async (req, res) => {
   try {
@@ -177,7 +175,7 @@ app.put("/api/juegos/:id", async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: "Error al actualizar el juego" });
   }
-});
+}); // Actualiza un juego existente con los datos enviados mediante un formulario
 
 app.delete("/api/juegos/:id", async (req, res) => {
   try {
@@ -191,7 +189,7 @@ app.delete("/api/juegos/:id", async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: "Error al eliminar el juego" });
   }
-});
+}); // Elimina un juego específico por su ID
 
 app.post("/api/juegos/:id/valorar", async (req, res) => {
   try {
@@ -224,7 +222,7 @@ app.post("/api/juegos/:id/valorar", async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: "Error al guardar valoración", details: err.message });
   }
-});
+}); // GUARDAR VALORACIÓN DEL USUARIO PARA UN JUEGO ESPECÍFICO
 
 // ELIMINAR VALORACIÓN
 app.delete("/api/juegos/:id/valorar", async (req, res) => {

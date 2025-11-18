@@ -21,8 +21,8 @@ const URL_API = "http://localhost:3002/api/juegos";
 // Uso: const juegos = await obtenerJuegos();
 export const obtenerJuegos = async () => {
   try {
-    const response = await fetch(URL_API);
-    const data = await response.json();
+    const response = await fetch(URL_API); // realiza la petición GET y espera la respuesta
+    const data = await response.json(); // convierte la respuesta a JSON
     return data.data || data; // Ajusta según tu estructura de respuesta
   } catch (error) {
     console.error("Error al obtener juegos:", error);
@@ -31,12 +31,12 @@ export const obtenerJuegos = async () => {
 };
 
 // ============================================
-// OBTENER UN JUEGO POR ID (READ)
+// OBTENER UN JUEGO POR ID 
 // ============================================
 // Uso: const juego = await obtenerJuegoPorId("123abc");
 export const obtenerJuegoPorId = async (id) => {
   try {
-    const response = await fetch(`${URL_API}/${id}`);
+    const response = await fetch(`${URL_API}/${id}`); // petición GET por ID
     const data = await response.json();
     return data;
   } catch (error) {
