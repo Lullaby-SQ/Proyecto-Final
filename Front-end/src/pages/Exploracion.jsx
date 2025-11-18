@@ -4,16 +4,18 @@ import Navbar from "../components/NavBar";
 import FormularioValoracion from "../components/FormularioValoracion";
 import "../styles/exploracion.css";
 
+
+// Página de exploración de juegos
 function Exploracion() {
-  const navigate = useNavigate();
-  const [juegos, setJuegos] = useState([]);
-  const [juegosFiltrados, setJuegosFiltrados] = useState([]);
-  const [filtroCategoria, setFiltroCategoria] = useState("Todos");
-  const [busqueda, setBusqueda] = useState("");
-  const [modalAbierto, setModalAbierto] = useState(false);
-  const [juegoSeleccionado, setJuegoSeleccionado] = useState(null);
-  const [cargando, setCargando] = useState(true);
-  const [error, setError] = useState(null);
+  const navigate = useNavigate(); // Hook para navegación
+  const [juegos, setJuegos] = useState([]); // Todos los juegos
+  const [juegosFiltrados, setJuegosFiltrados] = useState([]); // Juegos después de aplicar filtros
+  const [filtroCategoria, setFiltroCategoria] = useState("Todos"); // Categoría seleccionada
+  const [busqueda, setBusqueda] = useState(""); // Término de búsqueda
+  const [modalAbierto, setModalAbierto] = useState(false); // Estado del modal
+  const [juegoSeleccionado, setJuegoSeleccionado] = useState(null); // Juego seleccionado para valorar
+  const [cargando, setCargando] = useState(true); // Estado de carga
+  const [error, setError] = useState(null); // Estado de error
 
   const categorias = ["Acción", "Aventura", "RPG", "Estrategia", "Simulación", "Metroidvania"];
 
@@ -30,8 +32,8 @@ function Exploracion() {
       if (!res.ok) throw new Error("Error al cargar juegos");
       
       const data = await res.json();
-      setJuegos(data);
-      setJuegosFiltrados(data);
+      setJuegos(data); // Guardar todos los juegos
+      setJuegosFiltrados(data); // Inicialmente, todos los juegos están filtrados
     } catch (err) {
       console.error("Error:", err);
       setError(err.message);
@@ -40,34 +42,34 @@ function Exploracion() {
     }
   };
 
-  // Filtrar por categoría y búsqueda
+  // Filtrar por categoría y búsqueda, cada vez que cambian se actualiza la lista
   useEffect(() => {
     let resultado = juegos;
 
-    if (filtroCategoria !== "Todos") {
+    if (filtroCategoria !== "Todos") { // Si se selecciona una categoría específica
       resultado = resultado.filter(j => 
-        j.categorias?.includes(filtroCategoria)
+        j.categorias?.includes(filtroCategoria) // Filtrar por categoría
       );
     }
 
-    if (busqueda.trim()) {
-      const busquedaLower = busqueda.toLowerCase();
-      resultado = resultado.filter(j => 
-        j.nombre?.toLowerCase().includes(busquedaLower) ||
-        j.descripcion?.toLowerCase().includes(busquedaLower)
+    if (busqueda.trim()) { // Si hay un término de búsqueda
+      const busquedaLower = busqueda.toLowerCase(); // Convertir a minúsculas para comparación
+      resultado = resultado.filter(j =>  // Filtrar por nombre 
+        j.nombre?.toLowerCase().includes(busquedaLower) 
       );
     }
 
-    setJuegosFiltrados(resultado);
+    setJuegosFiltrados(resultado); // Actualizar la lista de juegos filtrados
   }, [filtroCategoria, busqueda, juegos]);
 
-  // Modal
+  // Modal - abrir
   const abrirModal = (juego) => {
     setJuegoSeleccionado(juego);
     setModalAbierto(true);
     document.body.style.overflow = 'hidden';
   };
 
+  // Modal - cerrar
   const cerrarModal = () => {
     setModalAbierto(false);
     setJuegoSeleccionado(null);
@@ -75,7 +77,7 @@ function Exploracion() {
   };
 
   const handleGuardarValoracion = async () => {
-    await obtenerJuegos(); // Recargar juegos
+    await obtenerJuegos(); // Recargar juegos, cuando se guarda una valoración
   };
 
   if (cargando) {
@@ -121,8 +123,8 @@ function Exploracion() {
             <input
               type="text"
               placeholder="Buscar juegos por nombre..."
-              value={busqueda}
-              onChange={(e) => setBusqueda(e.target.value)}
+              value={busqueda} // Valor del input de búsqueda
+              onChange={(e) => setBusqueda(e.target.value)}  // Actualizar estado de búsqueda
             />
             {busqueda && (
               <button 
@@ -130,19 +132,19 @@ function Exploracion() {
                 onClick={() => setBusqueda("")}
               >
                 ✕
-              </button>
+              </button> // Botón para limpiar la búsqueda
             )}
           </div>
 
           <div className="filtro-categorias">
             <label>Categoría:</label>
             <select 
-              value={filtroCategoria} 
-              onChange={(e) => setFiltroCategoria(e.target.value)}
+              value={filtroCategoria}  // Valor del select de categorías
+              onChange={(e) => setFiltroCategoria(e.target.value)} // Actualizar estado de categoría
             >
               <option value="Todos">Todas</option>
-              {categorias.map((cat, i) => (
-                <option key={i} value={cat}>{cat}</option>
+              {categorias.map((cat, i) => ( // recorre las categorías
+                <option key={i} value={cat}>{cat}</option> // Opciones de categorías
               ))}
             </select>
           </div>
@@ -151,22 +153,22 @@ function Exploracion() {
         {/* Contador de resultados */}
         <div className="info-resultados">
           <p>
-            {juegosFiltrados.length === 0 
+            {juegosFiltrados.length === 0  // Si no hay juegos encontrados
               ? "No se encontraron juegos" 
-              : `${juegosFiltrados.length} juego${juegosFiltrados.length !== 1 ? 's' : ''} encontrado${juegosFiltrados.length !== 1 ? 's' : ''}`
+              : `${juegosFiltrados.length} juego${juegosFiltrados.length !== 1 ? 's' : ''} encontrado${juegosFiltrados.length !== 1 ? 's' : ''}` // Contador con pluralización adecuada
             }
           </p>
         </div>
 
         {/* Grid de juegos */}
         <div className="grid-juegos">
-          {juegosFiltrados.length === 0 ? (
+          {juegosFiltrados.length === 0 ? ( // Si no hay juegos filtrados
             <div className="sin-resultados">
               <h3>No se encontraron juegos</h3>
               <p>Intenta con otra búsqueda o categoría</p>
             </div>
           ) : (
-            juegosFiltrados.map((juego) => (
+            juegosFiltrados.map((juego) => ( // Recorrer los juegos filtrados y crea una tarjeta para cada uno
               <div 
                 key={juego._id}
                 className="tarjeta-juego"
@@ -185,7 +187,7 @@ function Exploracion() {
                   )}
                   {juego.valoracionUsuario?.fechaValoracion && (
                     <div className="badge-biblioteca">
-                      ✓ En biblioteca
+                      En biblioteca
                     </div>
                   )}
                 </div>
@@ -194,15 +196,15 @@ function Exploracion() {
                   <h3>{juego.nombre}</h3>
                   
                   <div className="categorias-juego">
-                    {juego.categorias?.slice(0, 2).map((cat, i) => (
+                    {juego.categorias?.slice(0, 2).map((cat, i) => ( // Muestra hasta 2 categorías
                       <span key={i} className="categoria-tag">{cat}</span>
                     ))}
-                    {juego.categorias?.length > 2 && (
+                    {juego.categorias?.length > 2 && ( // Si hay más de 2 categorías, muestra un indicador de cuantas más
                       <span className="categoria-tag">+{juego.categorias.length - 2}</span>
                     )}
                   </div>
 
-                  {juego.valoracionUsuario?.estrellas > 0 && (
+                  {juego.valoracionUsuario?.estrellas > 0 && ( // Mostrar valoración previa si existe
                     <div className="valoracion-previa">
                       <span>Tu valoración:</span>
                       <div className="estrellas-mini">
@@ -213,7 +215,7 @@ function Exploracion() {
                   )}
 
                   <div className="precio-juego">
-                    {juego.tieneDescuento ? (
+                    {juego.tieneDescuento ? ( // Mostrar precio con descuento si tiene
                       <>
                         <span className="precio-original">${juego.precio.toFixed(2)}</span>
                         <span className="precio-actual">
@@ -221,7 +223,7 @@ function Exploracion() {
                         </span>
                       </>
                     ) : (
-                      <span className="precio-normal">${juego.precio.toFixed(2)}</span>
+                      <span className="precio-normal">${juego.precio.toFixed(2)}</span> // Precio normal
                     )}
                   </div>
                 </div>
@@ -231,7 +233,7 @@ function Exploracion() {
         </div>
       </div>
 
-      {/* ✅ MODAL CON COMPONENTE REUTILIZABLE */}
+      {/* MODAL CON COMPONENTE REUTILIZABLE */}
       {modalAbierto && juegoSeleccionado && (
         <FormularioValoracion 
           juegoSeleccionado={juegoSeleccionado}

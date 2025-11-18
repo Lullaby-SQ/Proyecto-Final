@@ -6,22 +6,22 @@ import '../styles/carrusel.css';
 import '../styles/global.css';
 
 function Index() {
-  const navigate = useNavigate();
-  const [current, setCurrent] = useState(0);
-  const [juegosDescuento, setJuegosDescuento] = useState([]);
-  const [cargando, setCargando] = useState(true);
-  const [modalAbierto, setModalAbierto] = useState(false);
-  const [juegoSeleccionado, setJuegoSeleccionado] = useState(null);
+  const navigate = useNavigate(); // Hook para navegación
+  const [current, setCurrent] = useState(0); // Índice del juego actual en el carrusel
+  const [juegosDescuento, setJuegosDescuento] = useState([]); // Juegos con descuento
+  const [cargando, setCargando] = useState(true); // Estado de carga
+  const [modalAbierto, setModalAbierto] = useState(false); // Estado del modal
+  const [juegoSeleccionado, setJuegoSeleccionado] = useState(null); // Juego seleccionado para valorar
 
   // Obtener juegos con descuento desde la API
   useEffect(() => {
     const obtenerJuegosConDescuento = async () => {
       try {
-        const res = await fetch("http://localhost:3001/api/juegos/descuentos");
+        const res = await fetch("http://localhost:3001/api/juegos/descuentos"); // Endpoint para juegos con descuento, petición GET a backend
         if (!res.ok) throw new Error("Error al cargar juegos");
 
         const data = await res.json();
-
+        // Adaptar datos para el carrusel
         if (data.length > 0) {
           const adaptados = data.map(j => ({
             id: j._id,
@@ -50,21 +50,24 @@ function Index() {
       }
     };
 
-    obtenerJuegosConDescuento();
+    obtenerJuegosConDescuento(); // Llama a la función para obtener los juegos con descuento
   }, []);
 
+  // Actualizar carrusel al cambiar el juego actual
   useEffect(() => {
-    if (juegosDescuento.length > 0) {
-      updateCarousel();
+    if (juegosDescuento.length > 0) { // Verifica que haya juegos antes de 
+      updateCarousel();// Llama a la función para actualizar el carrusel
     }
   }, [current, juegosDescuento]);
 
   const updateCarousel = () => {
-    const cards = document.querySelectorAll('.card');
-    cards.forEach((card, i) => {
-      const offset = (i - current + cards.length) % cards.length;
-      card.style.zIndex = cards.length - offset;
+    const cards = document.querySelectorAll('.card'); // Selecciona todas las tarjetas del carrusel
+    cards.forEach((card, i) => { // Itera sobre cada tarjeta
+      const offset = (i - current + cards.length) % cards.length; // Calcula el desplazamiento relativo al juego actual
+      card.style.zIndex = cards.length - offset; // Ajusta el z-index para superposición correcta
 
+
+      // Aplica transformaciones CSS basadas en el desplazamiento y la posición de la tarjeta en el carrusel
       if (offset === 0) {
         card.style.transform = `translateX(-50%) scale(1) rotateY(0deg)`;
         card.style.opacity = '1';
@@ -93,10 +96,12 @@ function Index() {
     });
   };
 
+  // Funciones para navegar en el carrusel, avanzar
   const nextSlide = () => {
     setCurrent((current + 1) % juegosDescuento.length);
   };
 
+  // Funciones para navegar en el carrusel, retroceder
   const prevSlide = () => {
     setCurrent((current - 1 + juegosDescuento.length) % juegosDescuento.length);
   };
@@ -131,10 +136,10 @@ function Index() {
           <div className="carousel-container">
             <h1>
               {cargando ? "Cargando ofertas..." :
-                juegosDescuento.length > 0 ? "Ofertas Especiales" : "Agrega juegos con descuento"}
+                juegosDescuento.length > 0 ? "Ofertas Especiales" : "Agrega juegos con descuento"} {/* Título dinámico según estado de carga y disponibilidad de juegos */}
             </h1>
 
-            {!cargando && juegosDescuento.length > 0 && (
+            {!cargando && juegosDescuento.length > 0 && ( // Renderiza el carrusel solo si no está cargando y hay juegos disponibles
               <>
                 <button className="btn prev" onClick={prevSlide}>&#10094;</button>
 
@@ -157,14 +162,14 @@ function Index() {
                       <div className="card-content">
                         <h2 className="card-title">{juego.titulo}</h2>
                         <div className="price-container">
-                          <span className="original-price">${juego.precioOriginal}</span>
-                          <span className="current-price">${juego.precioActual}</span>
+                          <span className="original-price">${juego.precioOriginal}</span> {/* Precio original tachado */}
+                          <span className="current-price">${juego.precioActual}</span> {/* Precio con descuento */}
                         </div>
                       </div>
                     </div>
                   ))}
                 </div>
-
+                {/* Botones de navegación del carrusel */}
                 <button className="btn next" onClick={nextSlide}>&#10095;</button>
               </>
             )}
@@ -212,7 +217,7 @@ function Index() {
           <p>&copy; 2025 Game Library. Todos los derechos reservados.</p>
         </div>
       </footer>
-
+      {/* Modal de valoración */}
       {modalAbierto && juegoSeleccionado && (
         <FormularioValoracion 
           juegoSeleccionado={juegoSeleccionado}

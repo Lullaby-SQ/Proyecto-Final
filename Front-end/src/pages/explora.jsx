@@ -57,7 +57,7 @@ function Explora() {
   };
 
   useEffect(() => {
-    obtenerJuegos();
+    obtenerJuegos(); // Obtener juegos al cargar el componente
   }, []);
 
   // Filtrado por categoría
@@ -75,18 +75,18 @@ function Explora() {
   const cerrarModalDetalles = () => {
     setModalDetalles(false);
     setJuegoSeleccionado(null);
-  };
+  }; // Cerrar modal de detalles y resetear el estado de juegoSeleccionado
 
   const abrirModalEditar = (juego) => {
     setNuevoJuego(juego);
     setModalDetalles(false);
     setModalEditar(true);
-  };
+  }; // Abrir modal de editar y cargar los datos del juego seleccionado
 
-  const cerrarModalEditar = () => {
+  const cerrarModalEditar = () => { 
     setModalEditar(false);
     setNuevoJuego({ id: "", titulo: "", imagen: "", descripcion: "", categorias: [], precio: 0, tieneDescuento: false, porcentajeDescuento: 0 });
-  };
+  };// Cerrar modal de editar y resetear el estado de nuevoJuego
 
   //Manejo de formularios
   const manejarCambio = (e) => { // Maneja cambios en inputs de texto y números
@@ -95,12 +95,12 @@ function Explora() {
   };
 
   const manejarCategorias = (e) => { // Maneja selección de categorías 
-    const valor = e.target.value;
+    const valor = e.target.value; // Valor de la categoría seleccionada
     setNuevoJuego(prev => ({
-      ...prev,
-      categorias: prev.categorias.includes(valor)
-        ? prev.categorias.filter(c => c !== valor)
-        : [...prev.categorias, valor],
+      ...prev, 
+      categorias: prev.categorias.includes(valor) // Si la categoría ya está seleccionada, la elimina; si no, la añade
+        ? prev.categorias.filter(c => c !== valor) // Eliminar categoría
+        : [...prev.categorias, valor], // Añadir categoría
     }));
   };
 
@@ -120,7 +120,7 @@ function Explora() {
   // Crear juego
   const agregarJuego = async (e) => {
     e.preventDefault();
-    try {
+    try { // Construir el objeto nuevo juego
       const nuevo = {
         nombre: nuevoJuego.titulo,
         descripcion: nuevoJuego.descripcion,
@@ -129,7 +129,7 @@ function Explora() {
         precio: parseFloat(nuevoJuego.precio) || 0,
         tieneDescuento: nuevoJuego.tieneDescuento,
         porcentajeDescuento: parseFloat(nuevoJuego.porcentajeDescuento) || 0,
-      };
+      }; // Enviar la solicitud POST al servidor
 
       const res = await fetch("http://localhost:3001/api/juegos", {
         method: "POST",
@@ -151,7 +151,7 @@ function Explora() {
   // Editar juego
   const guardarCambios = async (e) => {
     e.preventDefault();
-    try {
+    try { // Construir el objeto actualizado
       const actualizado = {
         nombre: nuevoJuego.titulo,
         descripcion: nuevoJuego.descripcion,
@@ -160,9 +160,9 @@ function Explora() {
         precio: parseFloat(nuevoJuego.precio) || 0,
         tieneDescuento: nuevoJuego.tieneDescuento,
         porcentajeDescuento: parseFloat(nuevoJuego.porcentajeDescuento) || 0,
-      };
+      }; // Enviar la solicitud PUT al servidor
 
-      const res = await fetch(`http://localhost:3001/api/juegos/${nuevoJuego.id}`, {
+      const res = await fetch(`http://localhost:3001/api/juegos/${nuevoJuego.id}`, { // Endpoint para actualizar un juego por su ID
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(actualizado),
@@ -180,9 +180,9 @@ function Explora() {
 
   // Eliminar juego
   const eliminarJuego = async (id) => {
-    if (!window.confirm("¿Estás seguro de que deseas eliminar este juego?")) return;
+    if (!window.confirm("¿Estás seguro de que deseas eliminar este juego?")) return; // Confirmación antes de eliminar
     try {
-      const res = await fetch(`http://localhost:3001/api/juegos/${id}`, { method: "DELETE" });
+      const res = await fetch(`http://localhost:3001/api/juegos/${id}`, { method: "DELETE" }); // Elimina el juego por su ID
       if (!res.ok) throw new Error("Error al eliminar");
       await obtenerJuegos();
       cerrarModalDetalles();
