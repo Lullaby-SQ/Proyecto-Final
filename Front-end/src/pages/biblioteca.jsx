@@ -35,43 +35,43 @@ function Biblioteca() {
     }
   };
 
-  const juegosFiltrados = juegos.filter(juego => {
-    if (filtro === 'todos') return true;
-    if (filtro === 'completos') return juego.valoracionUsuario?.completado === true;
-    if (filtro === 'incompletos') return juego.valoracionUsuario?.completado === false;
-    return true;
+  const juegosFiltrados = juegos.filter(juego => { // Filtrar juegos según el filtro seleccionado
+    if (filtro === 'todos') return true; // Mostrar todos los juegos
+    if (filtro === 'completos') return juego.valoracionUsuario?.completado === true; // Mostrar solo juegos completos
+    if (filtro === 'incompletos') return juego.valoracionUsuario?.completado === false; // Mostrar solo juegos incompletos
+    return true; // Por defecto, mostrar todos
   });
 
   const abrirModal = (juego) => {
     setJuegoSeleccionado(juego);
     setModalAbierto(true);
     document.body.style.overflow = 'hidden';
-  };
+  }; // Abrir modal y bloquear scroll de fondo
 
   const cerrarModal = () => {
     setModalAbierto(false);
     setJuegoSeleccionado(null);
     document.body.style.overflow = 'auto';
-  };
+  }; // Cerrar modal y restaurar scroll de fondo
 
   const handleGuardarValoracion = async () => {
     await obtenerBiblioteca(); // Recargar biblioteca
-  };
-
+  }; // Manejar guardado de valoración
+ 
   // Eliminar juego de la biblioteca
   const eliminarDeBiblioteca = async (juegoId) => {
     if (!window.confirm('¿Eliminar este juego de tu biblioteca?')) return;
     
     try {
-      const response = await fetch(`http://localhost:3001/api/juegos/${juegoId}/valorar`, {
+      const response = await fetch(`http://localhost:3001/api/juegos/${juegoId}/valorar`, { // Endpoint para eliminar valoración segun id de juego
         method: 'DELETE'
       });
 
       if (!response.ok) throw new Error('Error al eliminar');
 
       alert('Juego eliminado de tu biblioteca');
-      await obtenerBiblioteca();
-      cerrarModal();
+      await obtenerBiblioteca(); // Recargar biblioteca
+      cerrarModal(); // Cerrar modal si está abierto
     } catch (error) {
       console.error('Error:', error);
       alert('Error al eliminar el juego');
@@ -98,14 +98,14 @@ function Biblioteca() {
       </div>
 
       <div className="container-subtitle-biblioteca">
-        <h3 className="subtitle-biblioteca">Todos tus juegos:</h3>
-        <select value={filtro} onChange={(e) => setFiltro(e.target.value)}>
-          <option value="todos">Todos ({juegos.length})</option>
+        <h3 className="subtitle-biblioteca">Todos tus juegos:</h3> 
+        <select value={filtro} onChange={(e) => setFiltro(e.target.value)}> {/* Selector de filtro */}
+          <option value="todos">Todos ({juegos.length})</option> {/* Contador total de juegos */}
           <option value="completos">
-            Completos ({juegos.filter(j => j.valoracionUsuario?.completado === true).length})
+            Completos ({juegos.filter(j => j.valoracionUsuario?.completado === true).length}) {/* Contador de juegos completos */}
           </option>
           <option value="incompletos">
-            Incompletos ({juegos.filter(j => j.valoracionUsuario?.completado === false).length})
+            Incompletos ({juegos.filter(j => j.valoracionUsuario?.completado === false).length}) {/* Contador de juegos incompletos */}
           </option>
         </select>
       </div>
@@ -115,23 +115,23 @@ function Biblioteca() {
           <div style={{ gridColumn: '1/-1', textAlign: 'center', padding: '40px' }}>
             <p style={{ fontSize: '1.2em', color: '#b8c5d6' }}>
               {filtro === 'todos' 
-                ? 'No hay juegos en tu biblioteca. ¡Valora juegos desde la página principal!'
-                : `No hay juegos ${filtro}`}
-            </p>
+                ? 'No hay juegos en tu biblioteca. ¡Valora juegos desde la página principal!' // Mensaje para biblioteca vacía
+                : `No hay juegos ${filtro}`} {/* Mensaje según el filtro aplicado */}
+            </p> 
             <button 
               className="feature-btn" 
-              onClick={() => navigate('/')}
+              onClick={() => navigate('/')} // Navegar a la página principal
               style={{ marginTop: '20px' }}
             >
               Explorar Juegos
             </button>
           </div>
         ) : (
-          juegosFiltrados.map((juego) => (
+          juegosFiltrados.map((juego) => ( // Mostrar juegos filtrados y generar las tarjetas para cada uno
             <div 
               className="card-biblioteca" 
               key={juego._id}
-              onClick={() => abrirModal(juego)}
+              onClick={() => abrirModal(juego)} /* Abrir modal al hacer clic sobre la tarjeta, pasandole los valores del juego */
               style={{ cursor: 'pointer' }}
             >
               <div className="card-image-biblioteca">
@@ -141,15 +141,15 @@ function Biblioteca() {
                   onError={(e) => e.target.src = '/Front-end/images/placeholder.jpg'}
                 />
                
-                <div className={`estado ${juego.valoracionUsuario?.completado ? 'completado' : 'incompleto'}`}>
-                  {juego.valoracionUsuario?.completado ? '✓ Completo' : '⏳ Incompleto'}
+                <div className={`estado ${juego.valoracionUsuario?.completado ? 'completado' : 'incompleto'}`}> {/* Indicador visual de estado de completado */}
+                  {juego.valoracionUsuario?.completado ? 'Completo' : 'Incompleto'} {/* Indicador de estado de completado */}
                 </div>
               </div>
               <div className="card-content-biblioteca">
                 <h2 className="card-title">{juego.nombre}</h2>
                 <div className="price-container">
                   <span className="tiempo">
-                    {juego.valoracionUsuario?.horasJugadas || 0} Horas
+                    {juego.valoracionUsuario?.horasJugadas || 0} Horas {/* Mostrar horas jugadas */}
                   </span>
                 </div>
               </div>
@@ -158,19 +158,19 @@ function Biblioteca() {
         )}
 
         <div 
-          className="card-biblioteca card-agregar" 
-          onClick={() => navigate('/explora')} 
+          className="card-biblioteca card-agregar"  
+          onClick={() => navigate('/exploracion')} 
           style={{ cursor: 'pointer' }}
         >
           <div className="card-content-biblioteca">
-            <h2 className="card-title">+ Explora Nuevos Juegos</h2>
+            <h2 className="card-title">+ Explora Nuevos Juegos</h2> {/* Tarjeta para navegar a la página de exploración de juegos */}
           </div>
         </div>
       </div>
 
-      {modalAbierto && juegoSeleccionado && (
+      {modalAbierto && juegoSeleccionado && ( // Mostrar modal si está abierto y hay un juego seleccionado
         <div style={{ position: 'relative' }}>
-          <FormularioValoracion 
+          <FormularioValoracion  // Componente de formulario de valoración
             juegoSeleccionado={juegoSeleccionado}
             onCerrar={cerrarModal}
             onGuardar={handleGuardarValoracion}
@@ -179,7 +179,7 @@ function Biblioteca() {
           {/* Botón de eliminar (se superpone al formulario) */}
           <button 
             className="btn-eliminar-biblioteca"
-            onClick={() => eliminarDeBiblioteca(juegoSeleccionado._id)}
+            onClick={() => eliminarDeBiblioteca(juegoSeleccionado._id)} // Elimina juego seleccionado segun id
             style={{
               position: 'fixed',
               bottom: '30px',

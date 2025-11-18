@@ -5,33 +5,34 @@ import '../styles/formulario-valoracion.css';
  * Componente reutilizable para valorar juegos
  * Usado en App.jsx, Exploracion.jsx y biblioteca.jsx
  */
-function FormularioValoracion({ 
+function FormularioValoracion({  
   juegoSeleccionado, 
-  onCerrar, 
-  onGuardar 
-}) {
+  onCerrar, // Función para cerrar el modal
+  onGuardar // Función para manejar el guardado de la valoración
+}) { // Manejar estado de estrellas seleccionadas
   const [valorEstrellas, setValorEstrellas] = useState(
     juegoSeleccionado?.valoracionUsuario?.estrellas || 0
   );
-
+  // Manejar clic en estrella, actualiza el estado de la misma
   const handleEstrellaClick = (valor) => {
     setValorEstrellas(valor);
-  };
+  }; 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData(e.target);
+    const formData = new FormData(e.target); // Obtener datos del formulario
     
+    // Construir objeto de datos a enviar
     const datos = {
       estrellas: valorEstrellas,
       horasJugadas: parseFloat(formData.get('horas')) || 0,
-      completado: formData.get('completado'),  // ✅ Enviamos exactamente lo que viene del select
+      completado: formData.get('completado'),  
       reseña: formData.get('reseña')
     };
     
     try {
-      const response = await fetch(
-        `http://localhost:3001/api/juegos/${juegoSeleccionado._id || juegoSeleccionado.id}/valorar`, 
+      const response = await fetch( // Enviar datos al servidor
+        `http://localhost:3001/api/juegos/${juegoSeleccionado._id || juegoSeleccionado.id}/valorar`, // Endpoint para valorar juego 
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -44,7 +45,7 @@ function FormularioValoracion({
       const resultado = await response.json();
       alert(`¡Valoración de "${juegoSeleccionado.nombre || juegoSeleccionado.titulo}" guardada correctamente!`);
       
-      if (onGuardar) onGuardar(resultado);
+      if (onGuardar) onGuardar(resultado); // Llamar a la función onGuardar si se proporciona
       if (onCerrar) onCerrar();
     } catch (error) {
       console.error('Error:', error);
@@ -52,13 +53,15 @@ function FormularioValoracion({
     }
   };
 
+  // Si no hay juego seleccionado, no renderiza nada
   if (!juegoSeleccionado) return null;
 
+
+  // Renderizar el formulario de valoración
   return (
     <div className="overlay-valoracion" style={{ display: 'flex', opacity: '1' }}>
       <div className="popup-valoracion">
-        <button className="btn-cerrar" onClick={onCerrar}>✕</button>
-
+        <button className="btn-cerrar" onClick={onCerrar}>✕</button> {/* Botón para cerrar el modal */}
         <div className="div-popup">
           {/* LADO IZQUIERDO (imagen y nombre) */}
           <div className="section-valoracion">
@@ -100,8 +103,8 @@ function FormularioValoracion({
             <div className="categorias">
               <h3>Categorías:</h3>
               <ul>
-                {juegoSeleccionado.categorias?.map((cat, index) => (
-                  <li key={index}>{cat}</li>
+                {juegoSeleccionado.categorias?.map((cat, index) => ( // Renderizar categorías o mensaje si no hay categorías
+                  <li key={index}>{cat}</li> // Renderizar cada categoría
                 )) || <li>Sin categorías</li>}
               </ul>
             </div>
@@ -109,7 +112,7 @@ function FormularioValoracion({
             {/* Formulario de valoración */}
             <form className="form-valoracion" onSubmit={handleSubmit}>
               <h2>
-                {juegoSeleccionado.valoracionUsuario?.fechaValoracion 
+                {juegoSeleccionado.valoracionUsuario?.fechaValoracion  // titulo dinámico según si ya hay una valoración previa
                   ? "Editar tu Valoración" 
                   : "Agrega tu Valoración"
                 }
@@ -166,7 +169,7 @@ function FormularioValoracion({
               />
 
               <button type="submit" className="btn-enviar">
-                {juegoSeleccionado.valoracionUsuario?.fechaValoracion 
+                {juegoSeleccionado.valoracionUsuario?.fechaValoracion  // texto dinámico del botón según si ya hay valoración previa
                   ? "Actualizar Valoración" 
                   : "Guardar Valoración"
                 }
