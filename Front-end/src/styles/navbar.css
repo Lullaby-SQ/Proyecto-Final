@@ -1,0 +1,45 @@
+/* NAVBAR */
+.navbar {
+  background-color: var(--background-color-alt);
+  position: fixed;
+  z-index: 50;
+  display: flex;
+  width: 100%;
+  top: 0px;
+  padding: 15px;
+}
+
+.div-navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.div-navbar > ul {
+  margin-right: 40px;
+  gap: 20px;
+  display: flex;
+  list-style: none;
+  transition: 1s;
+}
+
+.div-navbar > ul > li {
+  font-size: 20px;
+}
+
+.title {
+  font-size: 25px;
+}
+
+a {
+  font-weight: 500;
+  color: var(--text-color);
+  text-decoration: none;
+  transition: 0.5s all ease;
+}
+
+a:hover {
+  color: hsl(237, 33%, 66%);
+  transition: 0.5s all ease;
+}

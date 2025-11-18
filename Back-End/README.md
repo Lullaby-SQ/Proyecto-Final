@@ -1,0 +1,1 @@
+Para lograr que funcione el Back-End, crear un archivo .env en la misma carpeta y colocar su Mongo_URI como se muestra en .env.example.
